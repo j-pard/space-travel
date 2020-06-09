@@ -1,0 +1,27 @@
+$medium-breakpoint: 780px;
+$large-breakpoint: 1040px;
+
+@media (max-width: $medium-breakpoint) {
+      nav {
+            display: none !important;
+      }
+
+      header {
+            padding-top: 20px !important;
+      }
+}
+
+@media (max-width: $large-breakpoint) {
+      nav {
+            padding-left: 20px;
+            padding-right: 20px;
+            ul {
+                  justify-content: space-between !important;
+                  flex-wrap: wrap !important;
+
+                  li.vertical-line {
+                        display: none;
+                  }
+            }
+      }
+}

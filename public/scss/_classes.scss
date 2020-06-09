@@ -1,0 +1,75 @@
+@import "_colors.scss";
+
+.flex-row-center-now {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      flex-wrap: nowrap;
+}
+
+.flex-row-center-w {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      flex-wrap: wrap;
+}
+
+.flex-row-around-now {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      flex-wrap: nowrap;
+}
+
+.flex-row-around-w {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      flex-wrap: wrap;
+}
+
+.flex-row-between-now {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      flex-wrap: nowrap;
+}
+
+.flex-row-end-now {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      flex-wrap: nowrap;
+}
+
+.flex-column-center-now {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex-wrap: nowrap;
+}
+
+.flex-column-around-now {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      flex-wrap: nowrap;
+}
+
+.flex-column-between-now {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex-wrap: nowrap;
+}
+
+.not-displayed {
+      display: none;
+}
+
+.vertical-line {
+      margin: auto 30px;
+      content: "";
+      height: 1px;
+      background-color: $ratpi-blue;
+}

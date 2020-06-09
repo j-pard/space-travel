@@ -1,0 +1,47 @@
+[
+      {
+            "lastname" : "Pardons",
+            "firstname" : "Jonathan",
+            "rank" : "Synchronisateur de variables",
+            "icon" : "../img/john.png",
+            "collaboration" : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus nihil placeat dolores quam voluptas, alias vitae corporis non impedit ratione autem sed repellendus ad nam accusantium corrupti mollitia ea nesciunt.",
+            "github" : "https://github.com/j-pard",
+            "linkedin" : "https://www.linkedin.com/in/pardons-jonathan/"
+      },
+      {
+            "lastname" : "Bricoult",
+            "firstname" : "Hugo",
+            "rank" : "Motoriste physique",
+            "icon" : "../img/hugo.png",
+            "collaboration" : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus nihil placeat dolores quam voluptas, alias vitae corporis non impedit ratione autem sed repellendus ad nam accusantium corrupti mollitia ea nesciunt.",
+            "github" : "https://github.com/HugoBricoult",
+            "linkedin" : "https://www.linkedin.com/in/hugo-bricoult/"
+      },
+      {
+            "lastname" : "Amjahad",
+            "firstname" : "Soufiane",
+            "rank" : "Ingénieur ballistique",
+            "icon" : "../img/souf.png",
+            "collaboration" : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus nihil placeat dolores quam voluptas, alias vitae corporis non impedit ratione autem sed repellendus ad nam accusantium corrupti mollitia ea nesciunt.",
+            "github" : "https://github.com/AmjSf",
+            "linkedin" : "https://www.linkedin.com/in/soufiane-amjahad/"
+      },
+      {
+            "lastname" : "Colart",
+            "firstname" : "Lloyd",
+            "rank" : "Ingénieur de collision",
+            "icon" : "../img/lloyd.png",
+            "collaboration" : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus nihil placeat dolores quam voluptas, alias vitae corporis non impedit ratione autem sed repellendus ad nam accusantium corrupti mollitia ea nesciunt.",
+            "github" : "https://github.com/Lloydcol",
+            "linkedin" : "https://www.linkedin.com/in/colart-lloyd/"
+      },
+      {
+            "lastname" : "Tedaldi",
+            "firstname" : "Timothy",
+            "rank" : "Holographeur",
+            "icon" : "../img/tim.png",
+            "collaboration" : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus nihil placeat dolores quam voluptas, alias vitae corporis non impedit ratione autem sed repellendus ad nam accusantium corrupti mollitia ea nesciunt.",
+            "github" : "https://github.com/TimothyTedaldi",
+            "linkedin" : "https://www.linkedin.com/in/timothy-tedaldi-dev/"
+      }
+]

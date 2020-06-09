@@ -1,0 +1,35 @@
+@import "_fonts.scss";
+
+h1 {
+      font-family: "spacebar";
+      margin: 30px auto;
+      padding: 6px 12px;
+      text-align: center;
+      font-size: 36px;
+      font-weight: bold;
+      background-color: $ratpi-blue;
+      border-radius: 5px;
+      color: white;
+}
+
+h2 {
+      font-family: "spacebar";
+      text-transform: uppercase;
+      color: #FFF;
+      background-color: $ratpi-blue;
+      padding: 6px 12px;
+      border-radius: 5px;
+}
+
+h3 {
+      color: $dark-gray;
+      opacity: 1;
+      padding: 12px 12px;
+      font-size: 18px;
+      text-align: justify;
+      font-weight: 600;
+}
+
+h4 {
+      color: $dark-gray;
+}

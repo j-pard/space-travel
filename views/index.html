@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="./css/style.css">
+      <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100&display=swap" rel="stylesheet">
+      <title>Ratpi Gang Studio</title>
+</head>
+<body>
+      <div id="content-body">
+            <nav id="top-nav" class="flex-column-center-now">
+                  <ul class="flex-row-end-now">
+                        <li><a href="#team" class="nav-btn">Qui sommes-nous ?</a></li>
+                        <li class="vertical-line"></li>
+                        <li><a href="#projects" class="nav-btn">Nos projets</a></li>
+                        <li class="vertical-line"></li>
+                        <li><a href="/game" class="nav-btn light">Acces au simulateur</a></li>
+                  </ul>
+            </nav>
+      
+            <header class="flex-row-center-w">
+                  <figure class="flex-column-center-now">
+                        <img src="./img/logo.png" alt="Pirate smiley with 'Rapti Gang Studio' legend">
+                  </figure>
+                  <section class="flex-column-center-now">
+                        <p>
+                              L'agitation régnait au sein de la galaxie BeCodia. <br>
+                              Des dizaines d'octets ont fait part de leurs idéaux, parfois fort différents. <br><br>
+      
+                              Entraînées et stimulées par ce mouvement non-binaire, 5 variables se sont réveillées à la suite de la découverte d'un texte antique. <br><br>
+      
+                              Ces variables, enfin associées, s'unirent pour former un nouveau type d'objet encore inconnu. <br>
+                              Ce dernier fût vu d'abord comme un bug. <br>
+                              Ensuite, au vu de sa nature, il fût considéré comme une feature. <br>
+                              De cette feature jaillit un nouveau process. <br><br>
+      
+                              De ce process naquit, enfin, la légende des 5 variables ...
+                        </p>
+      
+                        <h1>Ratpi Gang Studio</h1>
+                  </section>
+                  <div id="header-bottom" class="flex-row-center-w">
+                        <div class="positionning"></div>
+                        <div class="positionning">
+                              <a href="#team">
+                                    <p>Discover more</p>
+                                    <div class="arrow-down"></div>
+                              </a>
+                        </div>
+                  </div>            
+            </header>
+            
+            <section id="team">
+                  <div class="heading-div flex-row-between-now">
+                        <h2>Qui sommes-nous ?</h2>
+                        <div class="vertical-line"></div>
+                  </div>
+      
+                  <div class="section-body flex-row-center-w">
+                        <div id="interactive-crew" class="flex-column-center-now">
+                              <div id="crew-header" class="flex-row-around-now">
+                                    <figure>
+                                          <img id="id-avatar" src="" alt="">
+                                    </figure>
+                                    <ul class="flex-column-around-now">
+                                          <li class="flex-row-between-now">
+                                                <span class="id-titles">nom</span>
+                                                <span class="id-values" id="id-lastname"></span>
+                                          </li>
+                                          <li class="flex-row-between-now">
+                                                <span class="id-titles">prénom</span>
+                                                <span class="id-values" id="id-firstname"></span>
+                                          </li>
+                                          <li class="flex-row-between-now">
+                                                <span class="id-titles">titre</span>
+                                                <span class="id-values" id="id-rank"></span>
+                                          </li>
+                                    </ul>
+                              </div>
+      
+                              <p id="id-collaboration"></p>
+      
+                              <div id="crew-footer" class="flex-row-around-now">
+                                    <div>
+                                          <h4>Historique de mission</h4>
+                                          <a href="" id="id-github" target="_blank" class="not-displayed"><i class="fab fa-github"></i>Consulter</a>
+                                    </div>
+                                    <div>
+                                          <h4>Nouvel engagement</h4>
+                                          <a href="" id="id-linkedin" target="_blank" class="not-displayed"><i class="fab fa-linkedin"></i>Engagez-moi</a>
+                                    </div>
+                              </div>
+                              
+                        </div>
+      
+                        <div id="static-crew">
+                              <ul id="crew-list" class="flex-column-center-now"></ul>
+                        </div>
+                  </div>
+      
+                  <template id="member-template">
+                        <li class="crew-member flex-row-around-now">
+                              <img src="" alt="">
+                              <span class="member-lastname"></span>
+                              <span class="member-firstname"></span>
+                              <span class="member-rank"></span>
+                              <span class="member-collaboration not-displayed"></span>
+                              <span class="member-github not-displayed"></span>
+                              <span class="member-linkedin not-displayed"></span>
+                        </li>
+                  </template>
+      
+            </section>
+      
+            <section id="projects">
+                  <div class="heading-div flex-row-between-now">
+                        <h2>Nos projets</h2>
+                        <div class="vertical-line"></div>
+                  </div>
+      
+                  <div class="section-body flex-row-around-w">
+                        <article id="project1" class="project-overview flex-column-between-now">
+                              <div class="img-background"></div>
+                              <h3>Réagencement des bits stéllaires</h3>
+                        </article>
+      
+                        <article id="project2" class="project-overview flex-column-between-now">
+                              <div class="img-background"></div>
+                              <h3>Stabilisateur de variables</h3>
+                        </article>
+      
+                        <article id="project3" class="project-overview flex-column-between-now">
+                              <div class="img-background"></div>
+                              <h3>Simulateur de parcours spatial</h3>
+                        </article>
+                  </div>
+      
+                  <div id="project-bottom" class="flex-row-around-w">
+                        <div id="pp-1" class="positionning flex-column-center-now">
+                              <p>Calcul toujours en cours, soyez patient.</p>
+                        </div>
+                        <div id="pp-2" class="positionning flex-column-center-now">
+                              <p>Radioactivité élevée, zone mise en quarantaine.</p>
+                        </div>
+                        <div class="positionning flex-column-center-now">
+                              <div class="arrow-up"></div>
+                        </div>
+                  </div>
+            </section>
+      </div>
+
+      <footer class="flex-row-between-now">
+            <nav>
+                  <ul>
+                        <li><a href="#">Accueil</a></li>
+                        <li><a href="#team">Qui sommes-nous ?</a></li>
+                        <li><a href="#projects">Nos projets</a></li>
+                        <li><a href="/game">Accès au simulateur</a></li>
+                  </ul>
+            </nav>
+            <img id="logoBottom" src="./img/logo.png" alt="">
+      </footer>
+
+      <script src="https://kit.fontawesome.com/126bbe9047.js" crossorigin="anonymous"></script>
+      <script src="./models/members.js"></script>
+      <script src="./js/animations.js"></script>
+</body>
+</html>
