@@ -27,6 +27,11 @@ APP.get("/", (req, res) => {
       res.sendFile(__dirname + '/views/game.html');
 })
 
+.get("/adv", (req, res) => {
+      res.setHeader("Content-Type", "text/html; charset=utf-8");
+      res.sendFile(__dirname + '/views/advertise.html');
+})
+
 .use((req, res) => {
       res.setHeader("Content-Type", "text/html; charset=utf-8");
       res.status(404).sendFile(__dirname + '/views/404.html');

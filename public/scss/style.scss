@@ -388,6 +388,67 @@ body {
       }
 }
 
+//ADV 
+body#adv-body {
+      .nav-leave {
+            a, a:visited {
+                  color: $ratpi-blue;
+            }
+      }
+
+      div.p-container {
+            margin: 40px auto;
+            padding: 20px;
+            background-color: $light-gray;
+            border-radius: 10px;
+
+            p {
+                  text-align: center;
+                  font-weight: 600;
+                  font-size: 22px;
+            }
+      }
+
+      div#tutorial {
+            figure {
+                  max-width: 70%;
+                  img {
+                        width: 100%;
+                        height: auto;
+                  }
+            }
+
+            nav {
+                  ul {
+                        list-style: none;
+                        li {
+                              background-color: $light-gray;
+                              padding: 20px 30px;
+                              margin: 20px 0;
+                              border-radius: 10px;
+                              text-align: center;
+                              border: 2px solid $dark-gray;
+
+                              a {
+                                    text-decoration: none;
+                                    font-size: 22px;
+                                    font-family: "spacebar";
+                                    width: 100%;
+                                    color: $dark-gray;
+                              }
+                        }
+
+                        li:hover {
+                              border-color: $ratpi-blue;
+                              a {
+                                    color: $ratpi-blue;
+                              }
+                        }
+                  }
+            }
+      }
+
+}
 
 // GAME
 
@@ -399,26 +460,6 @@ body#game-body {
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
-
-      nav {
-            padding: 20px;
-
-            position: fixed;
-            top: 0;
-            left: 0;
-
-            a, a:visited {
-                  font-size: 24px;
-                  color: #FFF;
-                  font-family: "spacebar";
-                  text-decoration: none;
-            }
-            i {
-                  color: rgb(255, 0, 0);
-                  font-size: 32px;
-                  margin-right: 10px;
-            }
-      }
 
       canvas{
             max-width: 100%;

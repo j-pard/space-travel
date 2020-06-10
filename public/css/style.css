@@ -184,6 +184,21 @@ h4 {
       flex-wrap: nowrap;
 }
 
+.flex-column {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+}
+
 .flex-column-center-now {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -237,6 +252,26 @@ h4 {
   content: "";
   height: 1px;
   background-color: #0072d2;
+}
+
+.nav-leave {
+  padding: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.nav-leave a, .nav-leave a:visited {
+  font-size: 24px;
+  color: #FFF;
+  font-family: "spacebar";
+  text-decoration: none;
+}
+
+.nav-leave i {
+  color: red;
+  font-size: 32px;
+  margin-right: 10px;
 }
 
 @-webkit-keyframes small_to_big {
@@ -684,6 +719,61 @@ body footer img {
   cursor: pointer;
 }
 
+body#adv-body .nav-leave a, body#adv-body .nav-leave a:visited {
+  color: #0072d2;
+}
+
+body#adv-body div.p-container {
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+}
+
+body#adv-body div.p-container p {
+  text-align: center;
+  font-weight: 600;
+  font-size: 22px;
+}
+
+body#adv-body div#tutorial figure {
+  max-width: 70%;
+}
+
+body#adv-body div#tutorial figure img {
+  width: 100%;
+  height: auto;
+}
+
+body#adv-body div#tutorial nav ul {
+  list-style: none;
+}
+
+body#adv-body div#tutorial nav ul li {
+  background-color: #f0f0f0;
+  padding: 20px 30px;
+  margin: 20px 0;
+  border-radius: 10px;
+  text-align: center;
+  border: 2px solid #323232;
+}
+
+body#adv-body div#tutorial nav ul li a {
+  text-decoration: none;
+  font-size: 22px;
+  font-family: "spacebar";
+  width: 100%;
+  color: #323232;
+}
+
+body#adv-body div#tutorial nav ul li:hover {
+  border-color: #0072d2;
+}
+
+body#adv-body div#tutorial nav ul li:hover a {
+  color: #0072d2;
+}
+
 body#game-body {
   min-height: 100vh;
   padding: 30px 0 100px 0;
@@ -692,26 +782,6 @@ body#game-body {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-}
-
-body#game-body nav {
-  padding: 20px;
-  position: fixed;
-  top: 0;
-  left: 0;
-}
-
-body#game-body nav a, body#game-body nav a:visited {
-  font-size: 24px;
-  color: #FFF;
-  font-family: "spacebar";
-  text-decoration: none;
-}
-
-body#game-body nav i {
-  color: red;
-  font-size: 32px;
-  margin-right: 10px;
 }
 
 body#game-body canvas {
