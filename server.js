@@ -52,7 +52,8 @@ io.sockets.on('connection',(socket) => {
         "posy":450,
         "velx":0,
         "vely":0,
-        "anim":"right"
+        "anim":"right",
+        "pseudo":"SpaceMan"+id
     };
 
     player_list.push(player_param);

@@ -86,8 +86,41 @@ function preload ()
     this.load.image('bg2', './environment/bg-2.png');
     this.load.image('bg3', './environment/bg-3.png');
 
-    this.load.audio('backmusic', './audio/theme.mp3');
+    this.load.image('playerIcon1', './img/base4-1.png.png');
+    this.load.image('playerIcon2', './img/base4-2.png.png');
+    this.load.image('playerIcon3', './img/base4-3.png.png');
+    this.load.image('playerIcon4', './img/base4-4.png.png');
+    this.load.image('playerIcon5', './img/base4-5.png.png');
+    this.load.image('playerIcon6', './img/base4-6.png.png');
+    this.load.image('playerIcon7', './img/base4-7.png.png');
+    this.load.image('playerIcon8', './img/base4-8.png.png');
+    
 
+    this.load.audio('backmusic', './audio/theme.mp3');
+    this.load.spritesheet('player1','./img/player1.png',{
+        frameWidth: 80, frameHeight: 80
+    })
+    this.load.spritesheet('player2','./img/player2.png',{
+        frameWidth: 80, frameHeight: 80
+    })
+    this.load.spritesheet('player3','./img/player3.png',{
+        frameWidth: 80, frameHeight: 80
+    })
+    this.load.spritesheet('player4','./img/player4.png',{
+        frameWidth: 80, frameHeight: 80
+    })
+    this.load.spritesheet('player5','./img/player5.png',{
+        frameWidth: 80, frameHeight: 80
+    })
+    this.load.spritesheet('player6','./img/player6.png',{
+        frameWidth: 80, frameHeight: 80
+    })
+    this.load.spritesheet('player7','./img/player7.png',{
+        frameWidth: 80, frameHeight: 80
+    })
+    this.load.spritesheet('player8','./img/player8.png',{
+        frameWidth: 80, frameHeight: 80
+    })
     this.load.spritesheet('frog',
         PLAYER_SKIN_PATH,
         { frameWidth: PLAYER_FRAME_WIDTH, frameHeight: PLAYER_FRAME_HEIGT }
@@ -172,12 +205,31 @@ function create ()
         }
     }
 
+    //imput player pseudo - skin
+    pseudoText = this.add.text(GAME_WIDTH/2 - 170,GAME_HEIGHT/2 - 100, "Choisi ton pseudo!",{
+        font: "30px monospace",
+        fill: "#ffffff",
+        padding: { x: 20, y: 10 },
+        backgroundColor: "#00000000"
+    }).setScrollFactor(0);
+
+    inputPseudo = this.add.rexInputText(GAME_WIDTH/2, GAME_HEIGHT/2, 200, 50, {
+        font: "18px monospace",
+        fill: "#111111",
+        padding: { x: 50, y: 10 },
+        backgroundColor: "#eeeeee",
+        color:"#111111",
+        align:"center"
+    }).setScrollFactor(0);
+
+
     //create main player
-    player = this.physics.add.sprite(210,2070, 'frog');
+    player = this.physics.add.sprite(210,2070, 'player4');
     player.setBounce(0);
     //player.setCollideWorldBounds(true);  //body box 8/48 et décallé de 12 par rapport a la base
     player.id = idClient;
-    player.setScale(0.25);
+    player.setScale(0.5);
+    player.body.setSize(40,80,10,25);
 
     const camera = this.cameras.main;
     camera.startFollow(player);
@@ -201,6 +253,41 @@ function create ()
         repeat: -1
     });
 
+    //anim player4
+    this.anims.create({
+        key: 'left4',
+        frames: this.anims.generateFrameNumbers('player4', { start: 10, end: 19 }),
+        frameRate: 15,
+        repeat: -1
+    });
+
+    this.anims.create({
+        key: 'right4',
+        frames: this.anims.generateFrameNumbers('player4', { start: 0, end: 9 }),
+        frameRate: 15,
+        repeat: -1
+    });
+
+    this.anims.create({
+        key: 'jumpleft4',
+        frames: this.anims.generateFrameNumbers('player4', { start: 20, end: 25 }),
+        frameRate: 10,
+        repeat: 0
+    });
+    this.anims.create({
+        key: 'jumpright4',
+        frames: this.anims.generateFrameNumbers('player4', { start: 26, end: 31 }),
+        frameRate: 10,
+        repeat: 0
+    });
+
+    this.anims.create({
+        key: 'stand4',
+        frames: this.anims.generateFrameNumbers('player4', { start: 32, end: 34 }),
+        frameRate: 5,
+        repeat: -1
+    });
+
     //keyboard
     enterKey = this.input.keyboard.addKey('enter');
     restartKey = this.input.keyboard.addKey('backspace');
@@ -215,24 +302,6 @@ function create ()
         fill: "#ffffff",
         padding: { x: 20, y: 10 },
         backgroundColor: "#000000"
-    }).setScrollFactor(0);
-
-
-    //imput player pseudo
-    pseudoText = this.add.text(GAME_WIDTH/2 - 170,GAME_HEIGHT/2 - 100, "Choisi ton pseudo!",{
-        font: "30px monospace",
-        fill: "#ffffff",
-        padding: { x: 20, y: 10 },
-        backgroundColor: "#00000000"
-    }).setScrollFactor(0);
-
-    inputPseudo = this.add.rexInputText(GAME_WIDTH/2, GAME_HEIGHT/2, 200, 50, {
-        font: "18px monospace",
-        fill: "#111111",
-        padding: { x: 50, y: 10 },
-        backgroundColor: "#eeeeee",
-        color:"#111111",
-        align:"center"
     }).setScrollFactor(0);
 
     //update other players
@@ -281,7 +350,6 @@ function create ()
         let newP = JSON.parse(newPlayer);
         if(newP.id != idClient){
             playerList.push(newP);
-            console.log(playerList);
             let p = this.physics.add.sprite(210,2070,'frog');
             //p.setCollideWorldBounds(true);
             p.setBounce(0);
@@ -306,7 +374,10 @@ function update ()
         //CURRENT PLAYER VELOCITY X
         if (cursors.left.isDown & player.body.velocity.x >= -VELOCITY_X_MAX_SPEED) {
             //left
-            player.anims.play('left', true);
+            if(player.body.velocity.y == 0){
+                player.anims.play('left4', true);
+            }
+            
             player.setVelocityX(player.body.velocity.x - VELOCITY_RIGHT_LEFT_CHANGE_X);
             //emit
             socket.emit('playerMove',[player.x,player.y,player.body.velocity.x - VELOCITY_RIGHT_LEFT_CHANGE_X,player.body.velocity.y,idClient,'left']);
@@ -315,7 +386,10 @@ function update ()
         }
         else if (cursors.right.isDown & player.body.velocity.x <= VELOCITY_X_MAX_SPEED) {
             //right
-            player.anims.play('right', true);
+            if(player.body.velocity.y == 0){
+                player.anims.play('right4', true);
+            }
+            
             player.setVelocityX(player.body.velocity.x +VELOCITY_RIGHT_LEFT_CHANGE_X);
             //emit
             socket.emit('playerMove',[player.x,player.y,player.body.velocity.x + VELOCITY_RIGHT_LEFT_CHANGE_X,player.body.velocity.y,idClient,'right']);
@@ -327,6 +401,9 @@ function update ()
                 player.setVelocityX(player.body.velocity.x + VELOCITY_STOP_SPEED);
             }else{
                 player.setVelocityX(0);
+                if(player.body.velocity.y == 0){
+                    player.anims.play('stand4',true);
+                }
             }
         }
 
@@ -334,9 +411,15 @@ function update ()
         if(cursors.space.isDown & player.body.blocked.down){
             //jump
             player.setVelocityY(- VELOCITY_Y);
+            if(player.body.velocity.x <= 0){
+                player.anims.play('jumpleft4', true);
+            }else{
+                player.anims.play('jumpright4', true);
+            }
             //emit
             socket.emit('playerMove',[player.x,player.y,player.body.velocity.x,- VELOCITY_Y,idClient,'right']);
         }
+        
 
         //startzone
         if(player.x >= startCollider.x & player.x <= (startCollider.x+16) & player.y+2 >= startCollider.y-150 & player.y <=startCollider.y){
