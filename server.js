@@ -2,7 +2,7 @@ const HTTP = require('http');
 const EXPRESS = require('express');
 const fs = require('fs');
 const PORT = 3000;
-const top10="top10.json";
+const top10="./public/ressources/top10.json";
 
 const APP = EXPRESS();
 const SERVER = HTTP.createServer(APP);
@@ -32,6 +32,11 @@ APP.get("/", (req, res) => {
 .get("/adv", (req, res) => {
       res.setHeader("Content-Type", "text/html; charset=utf-8");
       res.sendFile(__dirname + '/views/advertise.html');
+})
+
+.get("/leaderboard", (req, res) => {
+    res.setHeader("Content-Type", "text/html; charset=utf-8");
+      res.sendFile(__dirname + '/views/leaderboard.html');
 })
 
 .use((req, res) => {
@@ -106,7 +111,6 @@ io.sockets.on('connection',(socket) => {
     });
 });
 
-
 // Functions
 
 
@@ -115,6 +119,7 @@ function checkAndAddToTop10(listTop,Contender){//takes a list of object and the 
     for(el in listTop){
         if (listTop[el].time>=Contender.time){
             listTop.splice(el,0,Contender);
+            added=true;
             break
         }
          //returns new top based on time in ms as a list of objects
@@ -124,7 +129,7 @@ function checkAndAddToTop10(listTop,Contender){//takes a list of object and the 
     }else if(listTop.length >10){
         listTop=listTop.slice(0,10);
     }
-    return listTop;
+    return listTop.sort((a, b) => (a.time > b.time) ? 1 : -1);
 }
 function writeListToTop(filepath,listTop){
     let obj={

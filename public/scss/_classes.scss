@@ -49,6 +49,14 @@
       flex-wrap: nowrap;
 }
 
+.flex-column-align-center {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      flex-wrap: nowrap;
+}
+
 .flex-column-around-center {
       display: flex;
       flex-direction: column;
@@ -107,4 +115,36 @@
             font-size: 32px;
             margin-right: 10px;
       }
+}
+
+li.crew-member {
+      width: 100%;
+      padding: 12px 24px;
+      margin: 10px 0;
+      align-items: center;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      background-color: $light-gray;
+      transition: all .3s;
+      cursor: pointer;
+
+      img {
+            width: 60px;
+            height: 60px;
+            border-radius: 60px;
+      }
+
+      span {
+            width: 25%;
+      }
+
+      span.member-lastname {
+            text-transform: uppercase;
+      }
+
+}
+
+li.hoverable:hover {
+      color: $ratpi-blue;
+      border: 1px solid $ratpi-blue;
 }

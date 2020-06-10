@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="./css/style.css">
+      <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100&display=swap" rel="stylesheet">
+      <link rel="icon" href="favicon.ico" />
+      <title>Ratpi Gang Studio</title>
+</head>
+<body id="lb-body" class="flex-column-align-center">
+
+      <nav class="nav-leave">
+            <a href="/"><i class="fas fa-sign-out-alt"></i>leave</a>
+        </nav>
+
+      <h1 id="h1-adv">leaderboard</h1>
+
+      <ul id="lb-list">
+            <li class="crew-member flex-row-around-now">
+                  <img class="lb-img title" src="./img/hash.png" alt="">
+                  <span class="lb-pseudo title">PSEUDO</span>
+                  <span class="lb-time title">TIME</span>
+            </li>
+      </ul>
+      
+      <template id="leaderboard-template">
+            <li class="crew-member li-head flex-row-around-now">
+                  <img class="lb-img" src="./img/earth.png" alt="">
+                  <span class="lb-pseudo"></span>
+                  <span class="lb-time"></span>
+            </li>
+      </template>
+      
+      <script src="https://kit.fontawesome.com/126bbe9047.js" crossorigin="anonymous"></script>
+      <script src="./models/leaderboard.js"></script>
+</body>
+</html>

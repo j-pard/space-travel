@@ -208,6 +208,24 @@ h4 {
       flex-wrap: nowrap;
 }
 
+.flex-column-align-center {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+}
+
 .flex-column-around-center {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -298,6 +316,40 @@ h4 {
   color: red;
   font-size: 32px;
   margin-right: 10px;
+}
+
+li.crew-member {
+  width: 100%;
+  padding: 12px 24px;
+  margin: 10px 0;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background-color: #f0f0f0;
+  -webkit-transition: all .3s;
+  transition: all .3s;
+  cursor: pointer;
+}
+
+li.crew-member img {
+  width: 60px;
+  height: 60px;
+  border-radius: 60px;
+}
+
+li.crew-member span {
+  width: 25%;
+}
+
+li.crew-member span.member-lastname {
+  text-transform: uppercase;
+}
+
+li.hoverable:hover {
+  color: #0072d2;
+  border: 1px solid #0072d2;
 }
 
 @-webkit-keyframes small_to_big {
@@ -577,40 +629,6 @@ body div#content-body section#team div#static-crew ul {
   padding-left: 20px;
 }
 
-body div#content-body section#team div#static-crew ul li {
-  width: 100%;
-  padding: 12px 24px;
-  margin: 10px 0;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  border: 1px solid transparent;
-  border-radius: 10px;
-  background-color: #f0f0f0;
-  -webkit-transition: all .3s;
-  transition: all .3s;
-  cursor: pointer;
-}
-
-body div#content-body section#team div#static-crew ul li img {
-  width: 60px;
-  height: 60px;
-  border-radius: 60px;
-}
-
-body div#content-body section#team div#static-crew ul li span {
-  width: 25%;
-}
-
-body div#content-body section#team div#static-crew ul li span.member-lastname {
-  text-transform: uppercase;
-}
-
-body div#content-body section#team div#static-crew ul li:hover {
-  color: #0072d2;
-  border: 1px solid #0072d2;
-}
-
 body div#content-body section#projects {
   width: 100%;
   padding: 50px 0;
@@ -826,5 +844,18 @@ body#game-body {
 body#game-body canvas {
   max-width: 100%;
   border: 3px solid #0072d2;
+}
+
+body#lb-body nav a, body#lb-body nav a:visited {
+  color: #323232;
+}
+
+body#lb-body ul {
+  width: 800px;
+  max-width: 100%;
+}
+
+body#lb-body ul li span.title {
+  font-weight: bold;
 }
 /*# sourceMappingURL=style.css.map */

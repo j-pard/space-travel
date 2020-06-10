@@ -223,37 +223,7 @@ body {
                         ul {
                               list-style: none;
                               padding-left: 20px;
-                              li {
-                                    width: 100%;
-                                    padding: 12px 24px;
-                                    margin: 10px 0;
-                                    align-items: center;
-                                    border: 1px solid transparent;
-                                    border-radius: 10px;
-                                    background-color: $light-gray;
-                                    transition: all .3s;
-                                    cursor: pointer;
-
-                                    img {
-                                          width: 60px;
-                                          height: 60px;
-                                          border-radius: 60px;
-                                    }
-
-                                    span {
-                                          width: 25%;
-                                    }
-
-                                    span.member-lastname {
-                                          text-transform: uppercase;
-                                    }
-
-
-                              }
-                              li:hover {
-                                    color: $ratpi-blue;
-                                    border: 1px solid $ratpi-blue;
-                              }
+                              
                         }
                   }
             }
@@ -477,4 +447,25 @@ body#game-body {
             max-width: 100%;
             border: 3px solid $ratpi-blue;
         }
+}
+
+
+// LEADERBOARD
+
+body#lb-body {
+      nav {
+            a, a:visited {
+                  color: $dark-gray;
+            }
+      }
+      ul {
+            width: 800px;
+            max-width: 100%;  
+
+            li {
+                  span.title {
+                        font-weight: bold;
+                  }
+            }
+      }
 }
