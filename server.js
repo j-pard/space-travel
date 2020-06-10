@@ -11,7 +11,7 @@ let player_list = [];
 let id_list = new Set();
 
 // RUNNING
-SERVER.listen(PORT, () => {
+SERVER.listen(process.env.PORT || PORT, () => {
       console.log("Activating the plateform ...");
 });
 
