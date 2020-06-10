@@ -24,7 +24,7 @@ PROJECT2.addEventListener("click", () => {
 });
 
 PROJECT3.addEventListener("click", () => {
-      location.href = "/game";
+      location.href = "/adv";
 });
 
 IMG_BOT.addEventListener("click", () => {

@@ -208,6 +208,23 @@ h4 {
       flex-wrap: nowrap;
 }
 
+.flex-column-around-center {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+}
+
 .flex-column-center-now {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -733,7 +750,10 @@ body footer img {
 }
 
 body#adv-body {
+  overflow: hidden;
   padding-top: 10px;
+  width: 100vw;
+  height: 100vh;
 }
 
 body#adv-body .nav-leave a, body#adv-body .nav-leave a:visited {
@@ -792,7 +812,9 @@ body#adv-body div#tutorial nav ul li:hover a {
 }
 
 body#game-body {
-  min-height: 100vh;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
   padding: 30px 0 100px 0;
   background-color: #323232;
   background: url("../img/bg-1.png");
