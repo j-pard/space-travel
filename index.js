@@ -1,6 +1,8 @@
 const HTTP = require('http');
 const EXPRESS = require('express');
+const FS = require('fs');
 const PORT = 5000;
+const TOP10="top10.json";
 
 const APP = EXPRESS();
 const SERVER = HTTP.createServer(APP);
@@ -76,9 +78,73 @@ io.sockets.on('connection',(socket) => {
 
     //Mouvement update
     socket.on('playerMove',(data)=>{
+        for(el in player_list){
+            if(data[4] == player_list[el].id){
+                data.push(player_list[el].pseudo);
+                break;
+            }
+        }
+        data = JSON.stringify(data);
         socket.broadcast.emit('updatePlayerMove',data);
     });
+
+    socket.on('pseudoSet',(pseudo)=>{
+        let data = JSON.parse(pseudo);
+        for(el in player_list){
+            if(data[1] == player_list[el].id){
+                player_list[el].pseudo = data[0];
+                break;
+            }
+        }
+        socket.broadcast.emit('updatePseudo',pseudo);
+    });
+
+    socket.on('score',(score)=>{
+        let mylist=readTopToList(top10);
+        let newlist=checkAndAddToTop10(mylist,score);
+        writeListToTop(top10,newlist);
+    });
 });
+
+
+// Functions
+
+
+function checkAndAddToTop10(listTop,Contender){//takes a list of object and the contender as object
+    let added=false;
+    for(el in listTop){
+        if (listTop[el].time>=Contender.time){
+            listTop.splice(el,0,Contender);
+            break
+        }
+         //returns new top based on time in ms as a list of objects
+    }
+    if(listTop.length <10 && !added){
+        listTop.push(Contender);
+    }else if(listTop.length >10){
+        listTop=listTop.slice(0,10);
+    }
+    return listTop;
+}
+function writeListToTop(filepath,listTop){
+    let obj={
+        "top":listTop
+    }
+    let json = JSON.stringify(obj)
+    fs.writeFile (filepath, json, function(err) {
+        if (err) throw err;
+        console.log('Updating leaderboard');
+        });
+}
+
+function readTopToList(filepath){
+    return JSON.parse(fs.readFileSync(filepath, 'utf8'))["top"]
+}
+
+
+
+let test={"pseudo":"newratpi2",
+time: 97011}
 
 
 

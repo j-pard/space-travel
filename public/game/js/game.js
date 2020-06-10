@@ -1,22 +1,3 @@
-//GAME PARAMETERS
-const GAME_WIDTH = 1200;
-const GAME_HEIGHT = 600;
-const GRAVITY = 900;
-const RENDER_FPS = 144;
-const PLAYER_FRAME_WIDTH = 80;
-const PLAYER_FRAME_HEIGT = 80;
-const SPAWN_X = 100;
-const SPAWN_Y = 450;
-const VELOCITY_RIGHT_LEFT_CHANGE_X = 5;
-const VELOCITY_X_MAX_SPEED = 300;
-const VELOCITY_Y = 460;
-const VELOCITY_STOP_SPEED = 15;
-
-const PLAYER_SKIN_PATH = './img/frog.png';
-const TILE_SET_PATH = './img/tileset.png';
-const MAP_PATH = './map/cityMap.json';
-
-//GAME CONFIG
 let config = {
     type: Phaser.AUTO,
     width: GAME_WIDTH,
@@ -32,6 +13,10 @@ let config = {
         preload: preload,
         create: create,
         update: update
+    },
+    parent: "game",
+    dom: {
+        createContainer: true
     }
 };
 
@@ -41,9 +26,13 @@ let game = new Phaser.Game(config);
 //CURRENT PLAYER AND PLAYERS LIST
 let player;
 let players = [];
+let pseudo = "SpaceMan";
+let pseudoOverPlayer;
+let playersPseudoList = [];
 
 //INPUTS
 let cursors;
+let enterKey;
 
 //TIMER VARIABLES
 let timerText;
@@ -58,6 +47,12 @@ let finishTime = 0;
 let startCollider;
 let finishCollider;
 
+//GAME STATS
+let isGameReady = false;
+
+let inputPseudo;
+let pseudoText;
+
 
 function timerStart(now){
     if(!isStart){
@@ -70,8 +65,8 @@ function timerStop(now,timer){
     if(!isFinish){
         finishTime = now;
         isFinish = true;
-        console.log(timerconvert((finishTime - startTime)));
         timer.setText(timerconvert((finishTime - startTime)));
+        socket.emit("score",{"time":finishTime - startTime,"pseudo":pseudo});
     }
 }
 
@@ -82,6 +77,7 @@ function timerconvert(Time){
 //LOAD ASSETS
 function preload ()
 {
+    this.load.plugin('rexinputtextplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexinputtextplugin.min.js', true);
     this.load.image("tiles", TILE_SET_PATH);
     this.load.tilemapTiledJSON("map", MAP_PATH);
     this.load.image('bg1', './environment/bg-1.png');
@@ -163,11 +159,14 @@ function create ()
             //p.setCollideWorldBounds(true);
             p.setBounce(0);
             p.id = playerList[i].id;
-            p.tint = (playerList[i].id / 1000) * 0xffffff;
             p.setScale(0.25);
             this.physics.add.collider(p,Road);
             this.physics.add.collider(p,plateforms);
             players.push(p);
+
+            let text = this.add.text(p.x - PSEUDO_OFFSET_X,p.y - PSEUDO_OFFSET_Y,playerList[i].pseudo,PSEUDO_CONFIG);
+            text.id = playerList[i].id;
+            playersPseudoList.push(text);
         }
     }
 
@@ -193,6 +192,7 @@ function create ()
         frameRate: 15,
         repeat: -1
     });
+
     this.anims.create({
         key: 'right',
         frames: this.anims.generateFrameNumbers('frog', { start: 16, end: 30 }),
@@ -201,6 +201,7 @@ function create ()
     });
 
     //keyboard
+    enterKey = this.input.keyboard.addKey('enter');
     cursors = this.input.keyboard.createCursorKeys();
 
     //timer
@@ -211,12 +212,30 @@ function create ()
         font: "18px monospace",
         fill: "#ffffff",
         padding: { x: 20, y: 10 },
-        backgroundColor: "#000000"}).setScrollFactor(0);
+        backgroundColor: "#000000"
+    }).setScrollFactor(0);
 
+
+    //imput player pseudo
+    pseudoText = this.add.text(GAME_WIDTH/2 - 170,GAME_HEIGHT/2 - 100, "Choisi ton pseudo!",{
+        font: "30px monospace",
+        fill: "#ffffff",
+        padding: { x: 20, y: 10 },
+        backgroundColor: "#00000000"
+    }).setScrollFactor(0);
+
+    inputPseudo = this.add.rexInputText(GAME_WIDTH/2, GAME_HEIGHT/2, 200, 50, {
+        font: "18px monospace",
+        fill: "#111111",
+        padding: { x: 50, y: 10 },
+        backgroundColor: "#eeeeee",
+        color:"#111111",
+        align:"center"
+    }).setScrollFactor(0);
 
     //update other players
     socket.on('updatePlayerMove',(data)=>{
-        let d = JSON.stringify(data);
+        data = JSON.parse(data);
         for(i in players){
             if(players[i].id == data[4]){
                 players[i].x = data[0];
@@ -226,6 +245,13 @@ function create ()
                 players[i].anims.play(data[5]);
             }
         }
+         for(i in playersPseudoList){
+            if(playersPseudoList[i].id == data[4]){
+                playersPseudoList[i].setText(data[6]);
+                playersPseudoList[i].x = data[0] - PSEUDO_OFFSET_X;
+                playersPseudoList[i].y = data[1] - PSEUDO_OFFSET_Y;
+            }
+        } 
     });
     //remove a player
     socket.on('remove_player',(remove_player)=>{
@@ -240,6 +266,12 @@ function create ()
                 players.splice(el,1);
             }
         }
+        for(el in playersPseudoList){
+            if(playersPseudoList[el].id == remove_player){
+                playersPseudoList[el].destroy();
+                playersPseudoList.splice(el,1);
+            }
+        }
 
     });
     //add a player
@@ -252,11 +284,14 @@ function create ()
             //p.setCollideWorldBounds(true);
             p.setBounce(0);
             p.id = newP.id;
-            p.tint = (newP.id/1000) * 0xffffff;
             p.setScale(0.25);
             this.physics.add.collider(p,Road);
             this.physics.add.collider(p,plateforms);
             players.push(p);
+
+            let text = this.add.text(p.x,p.y,newP.pseudo,PSEUDO_CONFIG);
+            text.id = newP.id;
+            playersPseudoList.push(text);
         }
     });
 }
@@ -264,56 +299,86 @@ function create ()
 //GAME LOOP
 function update ()
 {
-    //CURRENT PLAYER VELOCITY X
-    if (cursors.left.isDown & player.body.velocity.x >= -VELOCITY_X_MAX_SPEED) {
-        //left
-        player.anims.play('left', true);
-        player.setVelocityX(player.body.velocity.x - VELOCITY_RIGHT_LEFT_CHANGE_X);
-        //emit
-        socket.emit('playerMove',[player.x,player.y,player.body.velocity.x - VELOCITY_RIGHT_LEFT_CHANGE_X,player.body.velocity.y,idClient,'left']);
-        socket.emit('playerPos',[]);
+    //GAME STATUS
+    if(isGameReady){
+        //CURRENT PLAYER VELOCITY X
+        if (cursors.left.isDown & player.body.velocity.x >= -VELOCITY_X_MAX_SPEED) {
+            //left
+            player.anims.play('left', true);
+            player.setVelocityX(player.body.velocity.x - VELOCITY_RIGHT_LEFT_CHANGE_X);
+            //emit
+            socket.emit('playerMove',[player.x,player.y,player.body.velocity.x - VELOCITY_RIGHT_LEFT_CHANGE_X,player.body.velocity.y,idClient,'left']);
+            socket.emit('playerPos',[]);
 
-    }
-    else if (cursors.right.isDown & player.body.velocity.x <= VELOCITY_X_MAX_SPEED) {
-        //right
-        player.anims.play('right', true);
-        player.setVelocityX(player.body.velocity.x +VELOCITY_RIGHT_LEFT_CHANGE_X);
-        //emit
-        socket.emit('playerMove',[player.x,player.y,player.body.velocity.x + VELOCITY_RIGHT_LEFT_CHANGE_X,player.body.velocity.y,idClient,'right']);
-    }
-    else{ //stop if nothings (with innertie)
-        if(player.body.velocity.x >= VELOCITY_STOP_SPEED){
-            player.setVelocityX(player.body.velocity.x - VELOCITY_STOP_SPEED);
-        }else if(player.body.velocity.x <= -VELOCITY_STOP_SPEED){
-            player.setVelocityX(player.body.velocity.x + VELOCITY_STOP_SPEED);
-        }else{
-            player.setVelocityX(0);
+        }
+        else if (cursors.right.isDown & player.body.velocity.x <= VELOCITY_X_MAX_SPEED) {
+            //right
+            player.anims.play('right', true);
+            player.setVelocityX(player.body.velocity.x +VELOCITY_RIGHT_LEFT_CHANGE_X);
+            //emit
+            socket.emit('playerMove',[player.x,player.y,player.body.velocity.x + VELOCITY_RIGHT_LEFT_CHANGE_X,player.body.velocity.y,idClient,'right']);
+        }
+        else{ //stop if nothings (with innertie)
+            if(player.body.velocity.x >= VELOCITY_STOP_SPEED){
+                player.setVelocityX(player.body.velocity.x - VELOCITY_STOP_SPEED);
+            }else if(player.body.velocity.x <= -VELOCITY_STOP_SPEED){
+                player.setVelocityX(player.body.velocity.x + VELOCITY_STOP_SPEED);
+            }else{
+                player.setVelocityX(0);
+            }
+        }
+
+        //CURRENT PLAYER VELOCITY Y
+        if(cursors.space.isDown & player.body.blocked.down){
+            //jump
+            player.setVelocityY(- VELOCITY_Y);
+            //emit
+            socket.emit('playerMove',[player.x,player.y,player.body.velocity.x,- VELOCITY_Y,idClient,'right']);
+        }
+
+        //startzone
+        if(player.x >= startCollider.x & player.x <= (startCollider.x+16) & player.y+2 >= startCollider.y-150 & player.y <=startCollider.y){
+            timerStart(this.time.now);
+        }
+        if(player.x >= finishCollider.x & player.x <= (finishCollider.x+16) & player.y+2 >= finishCollider.y-600 & player.y <=finishCollider.y){
+            timerStop(this.time.now,timerText);
+        }
+        if(isStart & !isFinish){
+            timerText.setText(timerconvert((this.time.now - startTime)));
+        }
+
+        for(i in players){
+            for(j in playersPseudoList){
+                if(players[i].id == playersPseudoList[j].id){
+                    playersPseudoList[j].x = players[i].x - PSEUDO_OFFSET_X;
+                    playersPseudoList[j].y = players[i].y - PSEUDO_OFFSET_Y;
+                }
+            }
+        }
+
+        pseudoOverPlayer.x = player.x - PSEUDO_OFFSET_X;
+        pseudoOverPlayer.y = player.y - PSEUDO_OFFSET_Y;
+    }else{
+        if(enterKey.isDown){
+            if(inputPseudo.text == ""){
+                pseudo = "SpaceMan"+idClient;
+            }else{
+                pseudo = inputPseudo.text;
+            }
+            inputPseudo.setScrollFactor(999);
+            pseudoText.setScrollFactor(999);
+            isGameReady = true;
+            pseudoOverPlayer = this.add.text(player.x - PSEUDO_OFFSET_X ,player.y - PSEUDO_OFFSET_Y,pseudo,PSEUDO_CONFIG);
+            socket.emit("pseudoSet",JSON.stringify([pseudo,idClient]));
         }
     }
-
-    //CURRENT PLAYER VELOCITY Y
-    if(cursors.space.isDown & player.body.blocked.down){
-        //jump
-        player.setVelocityY(- VELOCITY_Y);
-        //emit
-        socket.emit('playerMove',[player.x,player.y,player.body.velocity.x,- VELOCITY_Y,idClient,'right']);
-    }
-
-    //startzone
-    if(player.x >= startCollider.x & player.x <= (startCollider.x+16) & player.y+2 >= startCollider.y-150 & player.y <=startCollider.y){
-        timerStart(this.time.now);
-    }
-    if(player.x >= finishCollider.x & player.x <= (finishCollider.x+16) & player.y+2 >= finishCollider.y-600 & player.y <=finishCollider.y){
-        timerStop(this.time.now,timerText);
-    }
+    
 
     //bg update
     this.BG1.tilePositionX -= .03;
     this.BG2.tilePositionX += .02;
     this.BG3.tilePositionX -= .01;
-    if(isStart & !isFinish){
-        timerText.setText(timerconvert((this.time.now - startTime)));
-    }
+    
 }
 
 
