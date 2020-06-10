@@ -1,8 +1,8 @@
 const HTTP = require('http');
 const EXPRESS = require('express');
-const FS = require('fs');
+const fs = require('fs');
 const PORT = 5000;
-const TOP10="top10.json";
+const top10="top10.json";
 
 const APP = EXPRESS();
 const SERVER = HTTP.createServer(APP);
