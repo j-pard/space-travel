@@ -1,7 +1,7 @@
 const HTTP = require('http');
 const EXPRESS = require('express');
 const fs = require('fs');
-const PORT = 5000;
+const PORT = 3000;
 const top10="top10.json";
 
 const APP = EXPRESS();
