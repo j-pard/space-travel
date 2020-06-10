@@ -62,7 +62,10 @@ footer {
 h1 {
   font-family: "spacebar";
   margin: 30px auto;
-  padding: 6px 12px;
+  padding: 10px 12px 6px 12px;
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
   text-align: center;
   font-size: 36px;
   font-weight: bold;
@@ -679,5 +682,40 @@ body footer img {
   height: auto;
   border-radius: 5px;
   cursor: pointer;
+}
+
+body#game-body {
+  min-height: 100vh;
+  padding: 30px 0 100px 0;
+  background-color: #323232;
+  background: url("../img/bg-1.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+body#game-body nav {
+  padding: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+body#game-body nav a, body#game-body nav a:visited {
+  font-size: 24px;
+  color: #FFF;
+  font-family: "spacebar";
+  text-decoration: none;
+}
+
+body#game-body nav i {
+  color: red;
+  font-size: 32px;
+  margin-right: 10px;
+}
+
+body#game-body canvas {
+  max-width: 100%;
+  border: 3px solid #0072d2;
 }
 /*# sourceMappingURL=style.css.map */

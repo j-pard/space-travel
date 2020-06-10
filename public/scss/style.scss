@@ -387,3 +387,41 @@ body {
             }
       }
 }
+
+
+// GAME
+
+body#game-body {
+      min-height: 100vh;
+      padding: 30px 0 100px 0;
+      background-color: $dark-gray;
+      background: url("../img/bg-1.png");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+
+      nav {
+            padding: 20px;
+
+            position: fixed;
+            top: 0;
+            left: 0;
+
+            a, a:visited {
+                  font-size: 24px;
+                  color: #FFF;
+                  font-family: "spacebar";
+                  text-decoration: none;
+            }
+            i {
+                  color: rgb(255, 0, 0);
+                  font-size: 32px;
+                  margin-right: 10px;
+            }
+      }
+
+      canvas{
+            max-width: 100%;
+            border: 3px solid $ratpi-blue;
+        }
+}
