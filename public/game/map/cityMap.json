@@ -89,7 +89,7 @@
                 {
                  "height":0,
                  "id":2,
-                 "name":"",
+                 "name":"spawn",
                  "point":true,
                  "rotation":0,
                  "type":"",
@@ -112,7 +112,7 @@
                 {
                  "height":0,
                  "id":3,
-                 "name":"",
+                 "name":"trackerstart",
                  "point":true,
                  "rotation":0,
                  "type":"",
