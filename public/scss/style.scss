@@ -366,6 +366,11 @@ body {
                               a:hover {
                                     color: $ratpi-blue;
                               }
+
+                              a.light {
+                                    font-family: "spacebar";
+                              }
+
                         }
                         li::before {
                               display: inline-block;
@@ -376,6 +381,7 @@ body {
                               border-radius: 5px;
                               content: "";
                         }
+                        
                   } 
             }
 
@@ -390,6 +396,7 @@ body {
 
 //ADV 
 body#adv-body {
+      padding-top: 10px;
       .nav-leave {
             a, a:visited {
                   color: $ratpi-blue;

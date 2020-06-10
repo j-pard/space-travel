@@ -2,17 +2,21 @@ $medium-breakpoint: 780px;
 $large-breakpoint: 1040px;
 
 @media (max-width: $medium-breakpoint) {
-      nav {
+      nav.responsive-nav {
             display: none !important;
       }
 
       header {
             padding-top: 20px !important;
       }
+
+      figure#figure-touch {
+            max-width: 100% !important;
+      }
 }
 
 @media (max-width: $large-breakpoint) {
-      nav {
+      nav.responsive-nav {
             padding-left: 20px;
             padding-right: 20px;
             ul {
@@ -23,5 +27,13 @@ $large-breakpoint: 1040px;
                         display: none;
                   }
             }
+      }
+
+      figure#figure-touch {
+            max-width: 100% !important;
+      }
+
+      h1#h1-adv {
+            margin-top: 65px;
       }
 }
