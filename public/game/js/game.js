@@ -33,10 +33,12 @@ let playersPseudoList = [];
 //INPUTS
 let cursors;
 let enterKey;
+let restartKey;
 
 //TIMER VARIABLES
 let timerText;
 
+let isReset = false;
 let isStart = false;
 let isFinish = false;
 
@@ -175,7 +177,6 @@ function create ()
     player.setBounce(0);
     //player.setCollideWorldBounds(true);  //body box 8/48 et décallé de 12 par rapport a la base
     player.id = idClient;
-    player.tint = (idClient/1000) * 0xffffff;
     player.setScale(0.25);
 
     const camera = this.cameras.main;
@@ -202,6 +203,7 @@ function create ()
 
     //keyboard
     enterKey = this.input.keyboard.addKey('enter');
+    restartKey = this.input.keyboard.addKey('backspace');
     cursors = this.input.keyboard.createCursorKeys();
 
     //timer
@@ -339,6 +341,7 @@ function update ()
         //startzone
         if(player.x >= startCollider.x & player.x <= (startCollider.x+16) & player.y+2 >= startCollider.y-150 & player.y <=startCollider.y){
             timerStart(this.time.now);
+            isReset = false;
         }
         if(player.x >= finishCollider.x & player.x <= (finishCollider.x+16) & player.y+2 >= finishCollider.y-600 & player.y <=finishCollider.y){
             timerStop(this.time.now,timerText);
@@ -354,6 +357,15 @@ function update ()
                     playersPseudoList[j].y = players[i].y - PSEUDO_OFFSET_Y;
                 }
             }
+        }
+
+        if(restartKey.isDown & !isReset){
+            isReset = true;
+            player.x = 210;
+            player.y = 2070;
+            isStart = false;
+            isFinish = false;
+            timerText.setText('Timer : ');
         }
 
         pseudoOverPlayer.x = player.x - PSEUDO_OFFSET_X;
