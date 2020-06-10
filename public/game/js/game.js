@@ -12,9 +12,9 @@ const VELOCITY_X_MAX_SPEED = 300;
 const VELOCITY_Y = 460;
 const VELOCITY_STOP_SPEED = 15;
 
-const PLAYER_SKIN_PATH = './game/assets/game/img/frog.png';
-const TILE_SET_PATH = './game/assets/game/img/tileset.png';
-const MAP_PATH = './game/assets/game/map/cityMap.json';
+const PLAYER_SKIN_PATH = './img/frog.png';
+const TILE_SET_PATH = './img/tileset.png';
+const MAP_PATH = './map/cityMap.json';
 
 //GAME CONFIG
 let config = {
@@ -84,11 +84,11 @@ function preload ()
 {
     this.load.image("tiles", TILE_SET_PATH);
     this.load.tilemapTiledJSON("map", MAP_PATH);
-    this.load.image('bg1', './game/assets/game/environment/bg-1.png');
-    this.load.image('bg2', './game/assets/game/environment/bg-2.png');
-    this.load.image('bg3', './game/assets/game/environment/bg-3.png');
+    this.load.image('bg1', './environment/bg-1.png');
+    this.load.image('bg2', './environment/bg-2.png');
+    this.load.image('bg3', './environment/bg-3.png');
 
-    this.load.audio('backmusic', 'game/assets/game/audio/theme.mp3');
+    this.load.audio('backmusic', './audio/theme.mp3');
 
     this.load.spritesheet('frog',
         PLAYER_SKIN_PATH,

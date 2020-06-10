@@ -1,11 +1,49 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>RGS - Simulator</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.23.0/phaser-arcade-physics.js"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <title>Space Travel Simulator</title>
+    <style>
+        body{
+            display: flex;
+            justify-content: center;
+        }
+        canvas{
+            margin-left: auto;
+            margin-right: auto;
+            border: 3px solid gray;
+        }
+    </style>
 </head>
-<body>
-      <h1>GAME</h1>
+<body id="game-body">
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        let socket = io.connect();
+            
+        let idClient; 
+        let playerList;
+
+        //Enregistrement client ID et liste des joueurs
+        socket.on('id',(id)=>{
+            idClient = parseInt(id);
+        });
+        socket.on('player_list',(pl)=>{
+        playerList = JSON.parse(pl);
+        console.log(playerList);
+        
+    });
+        
+        //Update nouveau joueur
+        
+        
+
+    </script>
+    
+    <script src="./js/game.js"></script>
+
 </body>
 </html>
