@@ -4,6 +4,45 @@ const fs = require('fs');
 const PORT = 3000;
 const top10="./public/ressources/top10.json";
 
+
+
+const url = process.env.MONGODB_URI;
+
+const mongo = require('mongodb');
+const MongoClient = require('mongodb').MongoClient;
+
+
+function addToMongo(myobj){
+    MongoClient.connect(url, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("heroku_j058vh5r");
+        dbo.collection("score").insertOne(myobj, function(err, res) {
+            if (err) throw err;
+            console.log("1 document inserted");
+            db.close();
+        });
+        
+    });
+}
+//JHON POUR TOI POUR SORT <3a
+function getScore(){
+    MongoClient.connect(url, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("heroku_j058vh5r");
+        let mysort = { time: 1 };
+            dbo.collection("score").find().sort(mysort).toArray(function(err, result) {
+                if (err) throw err;
+                console.log(result);
+                db.close();
+                return result;
+    });
+}
+
+
+
+
+
+
 const APP = EXPRESS();
 const SERVER = HTTP.createServer(APP);
 
@@ -111,10 +150,11 @@ io.sockets.on('connection',(socket) => {
         socket.broadcast.emit('updatePseudo',pseudo);
     });
 
-    socket.on('score',(score)=>{
+    socket.on('score',(score)=>{/* 
         let mylist=readTopToList(top10);
         let newlist=checkAndAddToTop10(mylist,score);
-        writeListToTop(top10,newlist);
+        writeListToTop(top10,newlist); */
+        addToMongo(score);
         socket.broadcast.emit("newScore",score);
     });
 
