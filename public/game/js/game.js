@@ -451,6 +451,8 @@ function create ()
                     scoreList[i].time = scoreReturn.time;
                     isIn = true;
                     break;
+                }else{
+                    isIn=true;
                 }
             }
         }
