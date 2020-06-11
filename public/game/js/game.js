@@ -87,6 +87,7 @@ function preload ()
     this.load.image('bg3', './environment/bg-3.png');
 
     this.load.audio('backmusic', './audio/theme.mp3');
+    this.load.audio('jumpfx', './audio/jump_11.wav');
 
     this.load.spritesheet('frog',
         PLAYER_SKIN_PATH,
@@ -100,10 +101,12 @@ function create ()
     //RENDER FPS
     this.physics.world.setFPS(RENDER_FPS);
 
-    //MUSIC
+    //MUSIC / FX
 
     let soundback = this.sound.add('backmusic', {volume: 0.1});
     soundback.play();
+
+    jumpSound = this.sound.add('jumpfx', {volume: 0.1});
 
     //BG MAP
 
@@ -253,7 +256,7 @@ function create ()
                 playersPseudoList[i].x = data[0] - PSEUDO_OFFSET_X;
                 playersPseudoList[i].y = data[1] - PSEUDO_OFFSET_Y;
             }
-        } 
+        }
     });
     //remove a player
     socket.on('remove_player',(remove_player)=>{
@@ -334,6 +337,7 @@ function update ()
         if(cursors.space.isDown & player.body.blocked.down){
             //jump
             player.setVelocityY(- VELOCITY_Y);
+            jumpSound.play();
             //emit
             socket.emit('playerMove',[player.x,player.y,player.body.velocity.x,- VELOCITY_Y,idClient,'right']);
         }
@@ -384,13 +388,13 @@ function update ()
             socket.emit("pseudoSet",JSON.stringify([pseudo,idClient]));
         }
     }
-    
+
 
     //bg update
     this.BG1.tilePositionX -= .03;
     this.BG2.tilePositionX += .02;
     this.BG3.tilePositionX -= .01;
-    
+
 }
 
 
