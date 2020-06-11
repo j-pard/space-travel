@@ -379,7 +379,8 @@ function create ()
     LiveBoard = this.add.text(10,30,"",{
         fixedWidth:200,
         fixedHeight: 200,
-        backgroundColor: "#00000050"
+        backgroundColor: "#00000050",
+        font: "10px monospace"
     }).setScrollFactor(0);
 
     //update other players
@@ -443,22 +444,21 @@ function create ()
         }
     });
     socket.on("newScore",(scoreReturn)=>{
+        let isIn = false;
         for(i in scoreList){
             if(scoreList[i].pseudo == scoreReturn.pseudo){
-                if(scoreList[i].time < scoreReturn.time){
+                if(scoreList[i].time > scoreReturn.time){
                     scoreList[i].time = scoreReturn.time;
-                }
-                break;
-            }else{
-                if(scoreList[i].time >= scoreReturn.time){
-                    scoreList.splice(i,0,scoreReturn);
+                    isIn = true;
                     break;
                 }
             }
         }
-        if(scoreList.length == 0)scoreList.push(scoreReturn);
-        let text = "";
+        
+        if(!isIn || scoreList.length == 0)scoreList.push(scoreReturn);
+        
         scoreList.sort((a, b) => (a.time > b.time) ? 1 : -1);
+        let text = "";
         for(i in scoreList){
             text += convertMilliLiveBoard(scoreList[i]) + "\n";
         }
