@@ -101,9 +101,13 @@ function create ()
     //RENDER FPS
     this.physics.world.setFPS(RENDER_FPS);
 
+
     //MUSIC / FX
 
-    let soundback = this.sound.add('backmusic', {volume: 0.1});
+    let soundback = this.sound.add('backmusic', {
+        volume: 0.1,
+        loop: true,
+    });
     soundback.play();
 
     jumpSound = this.sound.add('jumpfx', {volume: 0.1});
