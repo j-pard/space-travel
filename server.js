@@ -39,6 +39,11 @@ APP.get("/", (req, res) => {
       res.sendFile(__dirname + '/views/leaderboard.html');
 })
 
+.get("/com", (req, res) => {
+    res.setHeader("Content-Type", "text/html; charset=utf-8");
+      res.sendFile(__dirname + '/views/communication.html');
+})
+
 .use((req, res) => {
       res.setHeader("Content-Type", "text/html; charset=utf-8");
       res.status(404).sendFile(__dirname + '/views/404.html');
@@ -46,7 +51,7 @@ APP.get("/", (req, res) => {
 
 // GAME
 //socket io
-var io = require('socket.io').listen(SERVER);
+let io = require('socket.io').listen(SERVER);
 
 // Quand un joueur se connect, initiation joueur
 io.sockets.on('connection',(socket) => {
@@ -108,6 +113,19 @@ io.sockets.on('connection',(socket) => {
         let mylist=readTopToList(top10);
         let newlist=checkAndAddToTop10(mylist,score);
         writeListToTop(top10,newlist);
+    });
+
+    // CHAT
+
+    socket.on('newPseudo', (pseudo) => {
+        socket.pseudo = pseudo;
+        console.log("Last user is know as " + socket.pseudo);
+    });
+
+    socket.on('messageToServer', (message) => {
+        console.log(socket.pseudo + " send a message : " + message);
+        socket.emit('messageToAll', {author: "You", text: message});
+        socket.broadcast.emit('messageToAll', {author: socket.pseudo, text: message});
     });
 });
 

@@ -310,12 +310,18 @@ h4 {
   color: #FFF;
   font-family: "spacebar";
   text-decoration: none;
+  -webkit-transition: all .3s;
+  transition: all .3s;
 }
 
 .nav-leave i {
   color: red;
   font-size: 32px;
   margin-right: 10px;
+}
+
+.nav-leave:hover a, .nav-leave:hover a:visited {
+  color: #0072d2 !important;
 }
 
 li.crew-member {
@@ -345,6 +351,14 @@ li.crew-member span {
 
 li.crew-member span.member-lastname {
   text-transform: uppercase;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
 }
 
 li.hoverable:hover {
@@ -775,7 +789,7 @@ body#adv-body {
 }
 
 body#adv-body .nav-leave a, body#adv-body .nav-leave a:visited {
-  color: #0072d2;
+  color: #323232;
 }
 
 body#adv-body div.p-container {
@@ -857,5 +871,71 @@ body#lb-body ul {
 
 body#lb-body ul li span.title {
   font-weight: bold;
+}
+
+body#chat-body nav.nav-leave a {
+  color: #323232;
+}
+
+body#chat-body #chatbox, body#chat-body form {
+  width: 800px;
+  max-width: 100%;
+  max-height: 80%;
+}
+
+body#chat-body form input {
+  border: 1px solid #323232;
+  border-radius: 10px;
+}
+
+body#chat-body form input:hover, body#chat-body form input:focus {
+  border-color: #0072d2;
+}
+
+body#chat-body form input#messageToSend {
+  width: 500px;
+  max-width: 100%;
+  padding: 6px 12px;
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 600;
+}
+
+body#chat-body form input#sendBtn {
+  width: 200px;
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+  padding: 8px 16px;
+  font-family: "spacebar";
+  color: #0072d2;
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+body#chat-body #chatbox {
+  height: 600px;
+  max-height: 70%;
+  margin: 20px auto;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  overflow-y: scroll;
+  background-color: #fafafa;
+  border: 1px solid #f0f0f0;
+  border-radius: 20px;
+  padding: 20px 30px;
+}
+
+body#chat-body #chatbox ul#messenger {
+  list-style: none;
+}
+
+body#chat-body #chatbox ul#messenger li .author {
+  padding: 5px 30px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+body#chat-body #chatbox ul#messenger li .you {
+  color: #0072d2;
 }
 /*# sourceMappingURL=style.css.map */

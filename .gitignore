@@ -4,5 +4,8 @@
 *.scss.map
 
 node_modules
+
 top10.json
 
+
+public/ressources/top10.json

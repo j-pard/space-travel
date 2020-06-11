@@ -109,11 +109,18 @@
             color: #FFF;
             font-family: "spacebar";
             text-decoration: none;
+            transition: all .3s;
       }
       i {
             color: rgb(255, 0, 0);
             font-size: 32px;
             margin-right: 10px;
+      }
+}
+
+.nav-leave:hover {
+      a, a:visited {
+            color: $ratpi-blue !important;
       }
 }
 
@@ -142,6 +149,14 @@ li.crew-member {
             text-transform: uppercase;
       }
 
+}
+
+.text-left {
+      text-align: left;
+}
+
+.text-right {
+      text-align: right;
 }
 
 li.hoverable:hover {
