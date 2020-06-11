@@ -36,6 +36,7 @@ function getScore(){
                 db.close();
                 return result;
     });
+});
 }
 
 
@@ -43,7 +44,7 @@ function getScore(){
 
 
 
-const APP = EXPRESS();
+const APP = EXPRESS(); 
 const SERVER = HTTP.createServer(APP);
 
 let player_list = [];
