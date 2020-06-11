@@ -124,10 +124,10 @@ function checkAndAddToTop10(listTop,Contender){//takes a list of object and the 
         }
          //returns new top based on time in ms as a list of objects
     }
-    if(listTop.length <10 && !added){
+    if(listTop.length <100 && !added){
         listTop.push(Contender);
-    }else if(listTop.length >10){
-        listTop=listTop.slice(0,10);
+    }else if(listTop.length >100){
+        listTop=listTop.slice(0,100);
     }
     return listTop.sort((a, b) => (a.time > b.time) ? 1 : -1);
 }
