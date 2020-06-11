@@ -13,7 +13,7 @@ const VELOCITY_Y = 460;
 const VELOCITY_STOP_SPEED = 15;
 
 const PSEUDO_OFFSET_X = 150;
-const PSEUDO_OFFSET_Y = 40;
+const PSEUDO_OFFSET_Y = 50;
 const PSEUDO_CONFIG = {
     font: "15px monospace",
     fill: "#ffffff",
