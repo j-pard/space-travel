@@ -29,6 +29,7 @@ let players = [];
 let pseudo = "SpaceMan";
 let pseudoOverPlayer;
 let playersPseudoList = [];
+let playerSkinChoice = 1;
 
 //INPUTS
 let cursors;
@@ -49,12 +50,26 @@ let finishTime = 0;
 let startCollider;
 let finishCollider;
 
+let LiveBoard;
+let titleBoard;
+let scoreList = [];
+
 //GAME STATS
 let isGameReady = false;
 
+//INPUT PARAM  GAME START
 let inputPseudo;
 let pseudoText;
+let skinChoiceList = [];
 
+//MAP
+let MAP;
+let plateforms;
+let tset;
+let Road;
+let decorsOverlay;
+let decors;
+let spawnPoint;
 
 function timerStart(now){
     if(!isStart){
@@ -74,7 +89,46 @@ function timerStop(now,timer){
 
 function timerconvert(Time){
     let date = new Date(Time);
-    return date.getMinutes() + " min(s) "+date.getSeconds()+ " sec(s) "+date.getMilliseconds()+ " ms";
+    return "Timer  " + date.getMinutes() + " : "+date.getSeconds()+ " : "+date.getMilliseconds();
+}
+
+function createMainPlayer(thisGame){
+    //create main player
+    if(playerSkinChoice == 9){
+        player = thisGame.physics.add.sprite(210,2070, "frog");
+    }else{
+        player = thisGame.physics.add.sprite(210,2070, "player"+playerSkinChoice);
+    }
+    
+    player.setBounce(0);
+    //player.setCollideWorldBounds(true);  //body box 8/48 et décallé de 12 par rapport a la base
+    player.id = idClient;
+    player.setScale(0.5);
+    player.body.setSize(40,80,10,25);
+
+    const camera = thisGame.cameras.main;
+    camera.startFollow(player);
+    camera.setBounds(0, 0, MAP.widthInPixels, MAP.heightInPixels);
+
+    thisGame.physics.add.collider(player, Road);
+    thisGame.physics.add.collider(player, plateforms);
+
+    pseudoOverPlayer = thisGame.add.text(player.x - PSEUDO_OFFSET_X ,player.y - PSEUDO_OFFSET_Y,pseudo,PSEUDO_CONFIG);
+}
+
+function createAllAnims(thisGame,keyName,configplace,id,frameRate,repeat){
+    thisGame.anims.create({
+        key: (keyName+id),
+        frames: thisGame.anims.generateFrameNumbers('player'+id,configplace),
+        frameRate:frameRate,
+        repeat: repeat
+    });
+}
+
+function convertMilliLiveBoard(scoreReturn){
+    let d = new Date(scoreReturn.time);
+    let scoreSet = d.getMinutes()+" : "+d.getSeconds()+" : "+d.getMilliseconds()+ " | "+scoreReturn.pseudo;
+    return scoreSet;
 }
 //LOAD ASSETS
 function preload ()
@@ -86,14 +140,14 @@ function preload ()
     this.load.image('bg2', './environment/bg-2.png');
     this.load.image('bg3', './environment/bg-3.png');
 
-    this.load.image('playerIcon1', './img/base4-1.png.png');
-    this.load.image('playerIcon2', './img/base4-2.png.png');
-    this.load.image('playerIcon3', './img/base4-3.png.png');
-    this.load.image('playerIcon4', './img/base4-4.png.png');
-    this.load.image('playerIcon5', './img/base4-5.png.png');
-    this.load.image('playerIcon6', './img/base4-6.png.png');
-    this.load.image('playerIcon7', './img/base4-7.png.png');
-    this.load.image('playerIcon8', './img/base4-8.png.png');
+    this.load.image('playerIcon1', './img/base4-1.png');
+    this.load.image('playerIcon2', './img/base4-2.png');
+    this.load.image('playerIcon3', './img/base4-3.png');
+    this.load.image('playerIcon4', './img/base4-4.png');
+    this.load.image('playerIcon8', './img/base4-5.png');
+    this.load.image('playerIcon7', './img/base4-6.png');
+    this.load.image('playerIcon6', './img/base4-7.png');
+    this.load.image('playerIcon5', './img/base4-8.png');
     
 
     this.load.audio('backmusic', './audio/theme.mp3');
@@ -110,16 +164,16 @@ function preload ()
         frameWidth: 80, frameHeight: 80
     })
     this.load.spritesheet('player5','./img/player5.png',{
-        frameWidth: 80, frameHeight: 80
+        frameWidth: 85, frameHeight: 80
     })
     this.load.spritesheet('player6','./img/player6.png',{
-        frameWidth: 80, frameHeight: 80
+        frameWidth: 85, frameHeight: 80
     })
     this.load.spritesheet('player7','./img/player7.png',{
-        frameWidth: 80, frameHeight: 80
+        frameWidth: 85, frameHeight: 80
     })
     this.load.spritesheet('player8','./img/player8.png',{
-        frameWidth: 80, frameHeight: 80
+        frameWidth: 85, frameHeight: 80
     })
     this.load.spritesheet('frog',
         PLAYER_SKIN_PATH,
@@ -132,7 +186,6 @@ function create ()
 {
     //RENDER FPS
     this.physics.world.setFPS(RENDER_FPS);
-
     //MUSIC
 
     let soundback = this.sound.add('backmusic', {volume: 0.1});
@@ -162,10 +215,10 @@ function create ()
     this.BG3.setScale(scale3).setScrollFactor(0);
 
     //CREATE MAP
-    const MAP = this.make.tilemap({ key: "map"});
-    const tset = MAP.addTilesetImage("road", "tiles");
+    MAP = this.make.tilemap({ key: "map"});
+    tset = MAP.addTilesetImage("road", "tiles");
 
-    const Road = MAP.createStaticLayer("road", tset, 0, 0);
+    Road = MAP.createStaticLayer("road", tset, 0, 0);
     Road.setCollisionByProperty({ collides: true });
     Road.setScale(1);
 
@@ -176,25 +229,25 @@ function create ()
         faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
        }); */
 
-    const plateforms = MAP.createStaticLayer("plateforms", tset, 0, 0);
+    plateforms = MAP.createStaticLayer("plateforms", tset, 0, 0);
     plateforms.setCollisionByProperty({ collides: true });
     plateforms.setScale(1);
 
 
-    const decorsOverlay = MAP.createStaticLayer("decors overlay", tset, 0, 0);
-    const decors = MAP.createStaticLayer("decors", tset, 0, 0);
+    decorsOverlay = MAP.createStaticLayer("decors overlay", tset, 0, 0);
+    decors = MAP.createStaticLayer("decors", tset, 0, 0);
 
-    const spawnPoint = MAP.findObject("spawn",(dec)=> dec.name == "spawn");
+    spawnPoint = MAP.findObject("spawn",(dec)=> dec.name == "spawn");
 
 
     //create other players
     for(i in playerList){
         if(playerList[i].id != idClient){
-            let p = this.physics.add.sprite(210,2070,'frog');
+            let p = this.physics.add.sprite(210,2070,'player'+playerList[i].skin);
             //p.setCollideWorldBounds(true);
             p.setBounce(0);
             p.id = playerList[i].id;
-            p.setScale(0.25);
+            p.setScale(0.5);
             this.physics.add.collider(p,Road);
             this.physics.add.collider(p,plateforms);
             players.push(p);
@@ -210,7 +263,7 @@ function create ()
         font: "30px monospace",
         fill: "#ffffff",
         padding: { x: 20, y: 10 },
-        backgroundColor: "#00000000"
+        backgroundColor: "#00000050"
     }).setScrollFactor(0);
 
     inputPseudo = this.add.rexInputText(GAME_WIDTH/2, GAME_HEIGHT/2, 200, 50, {
@@ -222,69 +275,80 @@ function create ()
         align:"center"
     }).setScrollFactor(0);
 
+    //create 8 choices skin
+    for(let i = 0; i < 8; i++){
+        let choice = this.add.image(180 + (i*120),450,("playerIcon"+(i+1))).setScrollFactor(0);
+        choice.setInteractive();
+        choice.tint= 0x555555;
+        choice.input.enabled = true;
+        choice.on('clicked',(choice)=>{
+            playerSkinChoice = (i+1);
+            for(el in skinChoiceList){
+                skinChoiceList[el].tint = 0x555555;
+            }
+            choice.tint= 0xffffff;
+        },this);
+        skinChoiceList.push(choice);
+    }
+    this.input.on('gameobjectup', function (pointer, gameObject)
+    {
+        if(!isGameReady){
+            gameObject.emit('clicked', gameObject);
+        }
+    }, this);
 
-    //create main player
-    player = this.physics.add.sprite(210,2070, 'player4');
-    player.setBounce(0);
-    //player.setCollideWorldBounds(true);  //body box 8/48 et décallé de 12 par rapport a la base
-    player.id = idClient;
-    player.setScale(0.5);
-    player.body.setSize(40,80,10,25);
 
-    const camera = this.cameras.main;
-    camera.startFollow(player);
-    camera.setBounds(0, 0, MAP.widthInPixels, MAP.heightInPixels);
 
-    this.physics.add.collider(player, Road);
-    this.physics.add.collider(player, plateforms);
+    
+
+    
 
     //create animations
+    for(let i = 1; i <= 4; i++){
+        createAllAnims(this,'left',{ start: 10, end: 19 },i,15,-1);
+        createAllAnims(this,'right',{ start: 0, end: 9 },i,15,-1);
+        createAllAnims(this,'jumpleft',{ start: 20, end: 25 },i,10,0);
+        createAllAnims(this,'jumpright',{ start: 26, end: 31 },i,10,0);
+        createAllAnims(this,'stand',{ start: 32, end: 34 },i,5,-1);
+    }
+    for(let i = 5; i <= 8; i++){
+        createAllAnims(this,'left',{ start: 8, end: 15 },i,15,-1);
+        createAllAnims(this,'right',{ start: 0, end: 7 },i,15,-1);
+        createAllAnims(this,'jumpleft',{ start: 16, end: 19 },i,10,0);
+        createAllAnims(this,'jumpright',{ start: 20, end: 23 },i,10,0);
+        createAllAnims(this,'stand',{ start: 24, end: 27 },i,5,-1);
+    }
     this.anims.create({
-        key: 'left',
+        key: 'left9',
         frames: this.anims.generateFrameNumbers('frog', { start: 0, end: 15 }),
         frameRate: 15,
         repeat: -1
     });
 
     this.anims.create({
-        key: 'right',
+        key: 'right9',
         frames: this.anims.generateFrameNumbers('frog', { start: 16, end: 30 }),
         frameRate: 15,
         repeat: -1
     });
 
-    //anim player4
     this.anims.create({
-        key: 'left4',
-        frames: this.anims.generateFrameNumbers('player4', { start: 10, end: 19 }),
+        key: 'jumpleft9',
+        frames: this.anims.generateFrameNumbers('frog', { start: 0, end: 15 }),
         frameRate: 15,
         repeat: -1
     });
 
     this.anims.create({
-        key: 'right4',
-        frames: this.anims.generateFrameNumbers('player4', { start: 0, end: 9 }),
+        key: 'jumpright9',
+        frames: this.anims.generateFrameNumbers('frog', { start: 16, end: 30 }),
         frameRate: 15,
         repeat: -1
     });
-
     this.anims.create({
-        key: 'jumpleft4',
-        frames: this.anims.generateFrameNumbers('player4', { start: 20, end: 25 }),
-        frameRate: 10,
-        repeat: 0
-    });
-    this.anims.create({
-        key: 'jumpright4',
-        frames: this.anims.generateFrameNumbers('player4', { start: 26, end: 31 }),
-        frameRate: 10,
-        repeat: 0
-    });
-
-    this.anims.create({
-        key: 'stand4',
-        frames: this.anims.generateFrameNumbers('player4', { start: 32, end: 34 }),
-        frameRate: 5,
+        key: 'stand9',
+        frames: this.anims.generateFrameNumbers('frog', { start: 0, end: 15 }),
+        frameRate: 15,
         repeat: -1
     });
 
@@ -297,11 +361,25 @@ function create ()
     startCollider = MAP.findObject("tracker",obj => obj.name == "trackerstart");
     finishCollider = MAP.findObject("tracker",obj => obj.name == "trackerend");
 
-    timerText = this.add.text(16, 16, "Timer : ", {
+    timerText = this.add.text(950, 550, "Timer : ", {
         font: "18px monospace",
         fill: "#ffffff",
         padding: { x: 20, y: 10 },
-        backgroundColor: "#000000"
+        backgroundColor: "#00000050"
+    }).setScrollFactor(0);
+
+    //LiveBoard
+    titleBoard = this.add.text(10,10,"Live Records",{
+        fill: "#ffffff",
+        backgroundColor: "#00000050",
+        fixedWidth:200,
+        align:"center",
+        fixedHeight: 20
+    }).setScrollFactor(0);
+    LiveBoard = this.add.text(10,30,"",{
+        fixedWidth:200,
+        fixedHeight: 200,
+        backgroundColor: "#00000050"
     }).setScrollFactor(0);
 
     //update other players
@@ -350,11 +428,11 @@ function create ()
         let newP = JSON.parse(newPlayer);
         if(newP.id != idClient){
             playerList.push(newP);
-            let p = this.physics.add.sprite(210,2070,'frog');
+            let p = this.physics.add.sprite(210,2070,'player'+newP.skin);
             //p.setCollideWorldBounds(true);
             p.setBounce(0);
             p.id = newP.id;
-            p.setScale(0.25);
+            p.setScale(0.5);
             this.physics.add.collider(p,Road);
             this.physics.add.collider(p,plateforms);
             players.push(p);
@@ -363,6 +441,29 @@ function create ()
             text.id = newP.id;
             playersPseudoList.push(text);
         }
+    });
+    socket.on("newScore",(scoreReturn)=>{
+        for(i in scoreList){
+            if(scoreList[i].pseudo == scoreReturn.pseudo){
+                if(scoreList[i].time < scoreReturn.time){
+                    scoreList[i].time = scoreReturn.time;
+                }
+                break;
+            }else{
+                if(scoreList[i].time >= scoreReturn.time){
+                    scoreList.splice(i,0,scoreReturn);
+                    break;
+                }
+            }
+        }
+        if(scoreList.length == 0)scoreList.push(scoreReturn);
+        let text = "";
+        scoreList.sort((a, b) => (a.time > b.time) ? 1 : -1);
+        for(i in scoreList){
+            text += convertMilliLiveBoard(scoreList[i]) + "\n";
+        }
+        console.log(scoreList);
+        LiveBoard.setText(text);
     });
 }
 
@@ -375,24 +476,24 @@ function update ()
         if (cursors.left.isDown & player.body.velocity.x >= -VELOCITY_X_MAX_SPEED) {
             //left
             if(player.body.velocity.y == 0){
-                player.anims.play('left4', true);
+                player.anims.play('left'+playerSkinChoice, true);
             }
             
             player.setVelocityX(player.body.velocity.x - VELOCITY_RIGHT_LEFT_CHANGE_X);
             //emit
-            socket.emit('playerMove',[player.x,player.y,player.body.velocity.x - VELOCITY_RIGHT_LEFT_CHANGE_X,player.body.velocity.y,idClient,'left']);
+            socket.emit('playerMove',[player.x,player.y,player.body.velocity.x - VELOCITY_RIGHT_LEFT_CHANGE_X,player.body.velocity.y,idClient,'left'+playerSkinChoice]);
             socket.emit('playerPos',[]);
 
         }
         else if (cursors.right.isDown & player.body.velocity.x <= VELOCITY_X_MAX_SPEED) {
             //right
             if(player.body.velocity.y == 0){
-                player.anims.play('right4', true);
+                player.anims.play('right'+playerSkinChoice, true);
             }
             
             player.setVelocityX(player.body.velocity.x +VELOCITY_RIGHT_LEFT_CHANGE_X);
             //emit
-            socket.emit('playerMove',[player.x,player.y,player.body.velocity.x + VELOCITY_RIGHT_LEFT_CHANGE_X,player.body.velocity.y,idClient,'right']);
+            socket.emit('playerMove',[player.x,player.y,player.body.velocity.x + VELOCITY_RIGHT_LEFT_CHANGE_X,player.body.velocity.y,idClient,'right'+playerSkinChoice]);
         }
         else{ //stop if nothings (with innertie)
             if(player.body.velocity.x >= VELOCITY_STOP_SPEED){
@@ -402,7 +503,8 @@ function update ()
             }else{
                 player.setVelocityX(0);
                 if(player.body.velocity.y == 0){
-                    player.anims.play('stand4',true);
+                    player.anims.play('stand'+playerSkinChoice,true);
+                    socket.emit('playerMove',[player.x,player.y,player.body.velocity.x,player.body.velocity.y,idClient,'stand'+playerSkinChoice]);
                 }
             }
         }
@@ -412,12 +514,14 @@ function update ()
             //jump
             player.setVelocityY(- VELOCITY_Y);
             if(player.body.velocity.x <= 0){
-                player.anims.play('jumpleft4', true);
+                player.anims.play('jumpleft'+playerSkinChoice, true);
+                socket.emit('playerMove',[player.x,player.y,player.body.velocity.x,- VELOCITY_Y,idClient,'jumpleft'+playerSkinChoice]);
             }else{
-                player.anims.play('jumpright4', true);
+                player.anims.play('jumpright'+playerSkinChoice, true);
+                socket.emit('playerMove',[player.x,player.y,player.body.velocity.x,- VELOCITY_Y,idClient,'jumpright'+playerSkinChoice]);
             }
             //emit
-            socket.emit('playerMove',[player.x,player.y,player.body.velocity.x,- VELOCITY_Y,idClient,'right']);
+            
         }
         
 
@@ -463,8 +567,15 @@ function update ()
             inputPseudo.setScrollFactor(999);
             pseudoText.setScrollFactor(999);
             isGameReady = true;
-            pseudoOverPlayer = this.add.text(player.x - PSEUDO_OFFSET_X ,player.y - PSEUDO_OFFSET_Y,pseudo,PSEUDO_CONFIG);
-            socket.emit("pseudoSet",JSON.stringify([pseudo,idClient]));
+            if(pseudo == "maboy"){
+                playerSkinChoice = 9;
+            }
+            for(i in skinChoiceList){
+                skinChoiceList[i].input.enabled = false;
+                skinChoiceList[i].setVisible(false);
+            }
+            createMainPlayer(this);
+            socket.emit("pseudoSet",JSON.stringify([pseudo,idClient,playerSkinChoice]));
         }
     }
     

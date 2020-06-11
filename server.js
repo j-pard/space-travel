@@ -53,7 +53,8 @@ io.sockets.on('connection',(socket) => {
         "velx":0,
         "vely":0,
         "anim":"right",
-        "pseudo":"SpaceMan"+id
+        "pseudo":"SpaceMan"+id,
+        "skin":1
     };
 
     player_list.push(player_param);
@@ -104,6 +105,7 @@ io.sockets.on('connection',(socket) => {
         let mylist=readTopToList(top10);
         let newlist=checkAndAddToTop10(mylist,score);
         writeListToTop(top10,newlist);
+        socket.broadcast.emit("newScore",score);
     });
 });
 
