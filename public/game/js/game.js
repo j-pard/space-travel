@@ -99,7 +99,7 @@ function createMainPlayer(thisGame){
     }else{
         player = thisGame.physics.add.sprite(210,2070, "player"+playerSkinChoice);
     }
-    
+
     player.setBounce(0);
     //player.setCollideWorldBounds(true);  //body box 8/48 et décallé de 12 par rapport a la base
     player.id = idClient;
@@ -140,7 +140,6 @@ function preload ()
     this.load.image('bg2', './environment/bg-2.png');
     this.load.image('bg3', './environment/bg-3.png');
 
-<<<<<<< HEAD
     this.load.image('playerIcon1', './img/base4-1.png');
     this.load.image('playerIcon2', './img/base4-2.png');
     this.load.image('playerIcon3', './img/base4-3.png');
@@ -149,11 +148,11 @@ function preload ()
     this.load.image('playerIcon7', './img/base4-6.png');
     this.load.image('playerIcon6', './img/base4-7.png');
     this.load.image('playerIcon5', './img/base4-8.png');
-    
-=======
+
+
     this.load.audio('backmusic', './audio/theme.mp3');
     this.load.audio('jumpfx', './audio/jump_11.wav');
->>>>>>> soundfx
+
 
     this.load.audio('backmusic', './audio/theme.mp3');
     this.load.spritesheet('player1','./img/player1.png',{
@@ -191,11 +190,6 @@ function create ()
 {
     //RENDER FPS
     this.physics.world.setFPS(RENDER_FPS);
-<<<<<<< HEAD
-    //MUSIC
-=======
-
->>>>>>> soundfx
 
     //MUSIC / FX
 
@@ -315,9 +309,9 @@ function create ()
 
 
 
-    
 
-    
+
+
 
     //create animations
     for(let i = 1; i <= 4; i++){
@@ -472,9 +466,9 @@ function create ()
                 }
             }
         }
-        
+
         if(!isIn || scoreList.length == 0)scoreList.push(scoreReturn);
-        
+
         scoreList.sort((a, b) => (a.time > b.time) ? 1 : -1);
         let text = "";
         for(i in scoreList){
@@ -496,7 +490,7 @@ function update ()
             if(player.body.velocity.y == 0){
                 player.anims.play('left'+playerSkinChoice, true);
             }
-            
+
             player.setVelocityX(player.body.velocity.x - VELOCITY_RIGHT_LEFT_CHANGE_X);
             //emit
             socket.emit('playerMove',[player.x,player.y,player.body.velocity.x - VELOCITY_RIGHT_LEFT_CHANGE_X,player.body.velocity.y,idClient,'left'+playerSkinChoice]);
@@ -508,7 +502,7 @@ function update ()
             if(player.body.velocity.y == 0){
                 player.anims.play('right'+playerSkinChoice, true);
             }
-            
+
             player.setVelocityX(player.body.velocity.x +VELOCITY_RIGHT_LEFT_CHANGE_X);
             //emit
             socket.emit('playerMove',[player.x,player.y,player.body.velocity.x + VELOCITY_RIGHT_LEFT_CHANGE_X,player.body.velocity.y,idClient,'right'+playerSkinChoice]);
@@ -531,7 +525,7 @@ function update ()
         if(cursors.space.isDown & player.body.blocked.down){
             //jump
             player.setVelocityY(- VELOCITY_Y);
-<<<<<<< HEAD
+
             if(player.body.velocity.x <= 0){
                 player.anims.play('jumpleft'+playerSkinChoice, true);
                 socket.emit('playerMove',[player.x,player.y,player.body.velocity.x,- VELOCITY_Y,idClient,'jumpleft'+playerSkinChoice]);
@@ -539,13 +533,13 @@ function update ()
                 player.anims.play('jumpright'+playerSkinChoice, true);
                 socket.emit('playerMove',[player.x,player.y,player.body.velocity.x,- VELOCITY_Y,idClient,'jumpright'+playerSkinChoice]);
             }
-=======
+
             jumpSound.play();
->>>>>>> soundfx
+
             //emit
-            
+
         }
-        
+
 
         //startzone
         if(player.x >= startCollider.x & player.x <= (startCollider.x+16) & player.y+2 >= startCollider.y-150 & player.y <=startCollider.y){
