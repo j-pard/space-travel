@@ -140,6 +140,7 @@ function preload ()
     this.load.image('bg2', './environment/bg-2.png');
     this.load.image('bg3', './environment/bg-3.png');
 
+<<<<<<< HEAD
     this.load.image('playerIcon1', './img/base4-1.png');
     this.load.image('playerIcon2', './img/base4-2.png');
     this.load.image('playerIcon3', './img/base4-3.png');
@@ -149,6 +150,10 @@ function preload ()
     this.load.image('playerIcon6', './img/base4-7.png');
     this.load.image('playerIcon5', './img/base4-8.png');
     
+=======
+    this.load.audio('backmusic', './audio/theme.mp3');
+    this.load.audio('jumpfx', './audio/jump_11.wav');
+>>>>>>> soundfx
 
     this.load.audio('backmusic', './audio/theme.mp3');
     this.load.spritesheet('player1','./img/player1.png',{
@@ -186,10 +191,21 @@ function create ()
 {
     //RENDER FPS
     this.physics.world.setFPS(RENDER_FPS);
+<<<<<<< HEAD
     //MUSIC
+=======
 
-    let soundback = this.sound.add('backmusic', {volume: 0.1});
+>>>>>>> soundfx
+
+    //MUSIC / FX
+
+    let soundback = this.sound.add('backmusic', {
+        volume: 0.1,
+        loop: true,
+    });
     soundback.play();
+
+    jumpSound = this.sound.add('jumpfx', {volume: 0.1});
 
     //BG MAP
 
@@ -401,7 +417,7 @@ function create ()
                 playersPseudoList[i].x = data[0] - PSEUDO_OFFSET_X;
                 playersPseudoList[i].y = data[1] - PSEUDO_OFFSET_Y;
             }
-        } 
+        }
     });
     //remove a player
     socket.on('remove_player',(remove_player)=>{
@@ -515,6 +531,7 @@ function update ()
         if(cursors.space.isDown & player.body.blocked.down){
             //jump
             player.setVelocityY(- VELOCITY_Y);
+<<<<<<< HEAD
             if(player.body.velocity.x <= 0){
                 player.anims.play('jumpleft'+playerSkinChoice, true);
                 socket.emit('playerMove',[player.x,player.y,player.body.velocity.x,- VELOCITY_Y,idClient,'jumpleft'+playerSkinChoice]);
@@ -522,6 +539,9 @@ function update ()
                 player.anims.play('jumpright'+playerSkinChoice, true);
                 socket.emit('playerMove',[player.x,player.y,player.body.velocity.x,- VELOCITY_Y,idClient,'jumpright'+playerSkinChoice]);
             }
+=======
+            jumpSound.play();
+>>>>>>> soundfx
             //emit
             
         }
@@ -580,13 +600,13 @@ function update ()
             socket.emit("pseudoSet",JSON.stringify([pseudo,idClient,playerSkinChoice]));
         }
     }
-    
+
 
     //bg update
     this.BG1.tilePositionX -= .03;
     this.BG2.tilePositionX += .02;
     this.BG3.tilePositionX -= .01;
-    
+
 }
 
 
