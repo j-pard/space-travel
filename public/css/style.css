@@ -782,10 +782,10 @@ body footer img {
 }
 
 body#adv-body {
-  overflow: hidden;
+  overflow-x: hidden;
   padding-top: 10px;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 body#adv-body .nav-leave a, body#adv-body .nav-leave a:visited {
@@ -937,5 +937,23 @@ body#chat-body #chatbox ul#messenger li .author {
 
 body#chat-body #chatbox ul#messenger li .you {
   color: #0072d2;
+}
+
+body#body404 nav.nav-leave a {
+  color: #323232;
+}
+
+body#body404 h1 {
+  margin-top: 70px;
+}
+
+body#body404 h3 {
+  font-weight: 800;
+}
+
+body#body404 img {
+  margin-top: 100px;
+  max-width: 90vw;
+  height: auto;
 }
 /*# sourceMappingURL=style.css.map */
