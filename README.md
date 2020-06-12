@@ -19,6 +19,8 @@ Nous avons donc mit en place un site web représentant notre studio *fictif*. Gr
 * Stockage des meilleurs temps dans une base de données (MongoDB)
 * Support gamepad
 
+L'ensemble du projet utilise une structure **MVC** portée sur un serveur Node utilisant express et socket, avec une communication mongoDB.
+
 ## Contraintes
 * Faire un jeu multi joueurs.
 * Déployez votre application sur Heroku.
