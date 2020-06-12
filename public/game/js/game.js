@@ -35,9 +35,13 @@ let playersPseudoList = [];
 let playerSkinChoice = 1;
 
 //INPUTS
-let cursors;
 let enterKey;
 let restartKey;
+
+//CONTROLS
+let right = false;
+let left = false;
+let jump = false;
 
 //TIMER VARIABLES
 let timerText;
@@ -62,7 +66,7 @@ let titleLBoard;
 
 let chat;
 let chatTitle;
-let isChatToogle = false;
+let isChatToggle = false;
 let inputChat;
 let chatList = [];
 
@@ -380,7 +384,11 @@ function create ()
     //keyboard
     //enterKey = this.input.keyboard.addKey('enter');
     restartKey = this.input.keyboard.addKey('f2');
-    cursors = this.input.keyboard.createCursorKeys();
+    //cursors = this.input.keyboard.createCursorKeys();
+    this.input.keyboard.on('keydown', (event)=>{if(event.key == "ArrowLeft")left = true;}, this);
+    this.input.keyboard.on('keyup', (event)=>{if(event.key == "ArrowLeft")left = false;}, this);
+    this.input.keyboard.on('keydown', (event)=>{if(event.key == "ArrowRight")right = true;}, this);
+    this.input.keyboard.on('keyup', (event)=>{if(event.key == "ArrowRight")right = false;}, this);
 
     //timer
     startCollider = MAP.findObject("tracker",obj => obj.name == "trackerstart");
@@ -399,7 +407,7 @@ function create ()
     //chat
     chat = this.add.text(GAME_WIDTH/2-400,GAME_HEIGHT/2-230, "", CHAT_BOARD).setScrollFactor(0);
     chatTitle = this.add.text(GAME_WIDTH/2-400,GAME_HEIGHT/2-250, "Space Chat", CHAT_TITLE).setScrollFactor(0);
-    isChatToogle = false;
+    isChatToggle = false;
     inputChat = this.add.rexInputText(GAME_WIDTH/2 + 3, GAME_HEIGHT - 50, 800, 50, CHAT_INPUT).setScrollFactor(0);
     chat.setVisible(false);
     chatTitle.setVisible(false);
@@ -467,6 +475,7 @@ function create ()
             playersPseudoList.push(text);
         }
     });
+    console.log(this.input.keyboard);
     socket.on("newScore",(scoreReturn)=>{
         let isIn = false;
         for(i in scoreList){
@@ -501,7 +510,10 @@ function create ()
     });
     //toggle timer and leaderboard visibility
     document.addEventListener('keypress',(event)=>{
-        if(event.key == "t"){
+        
+        console.log(event.key);
+        if(event.key == " ")jump = true;
+        if(event.key == "t" & !isChatToggle){
             if(isToggleTimer){
                 LiveBoard.setVisible(true);
                 titleBoard.setVisible(true);
@@ -518,17 +530,17 @@ function create ()
                 isToggleTimer = true;
             }
         }
-        if(event.key == "c" & isGameReady == true){
-            if(isChatToogle){
+        if(event.key == "ç" & isGameReady == true){
+            if(isChatToggle){
                 chatTitle.setVisible(false);
                 chat.setVisible(false);
                 inputChat.setVisible(false);
-                isChatToogle = false;
+                isChatToggle = false;
             }else{
                 chatTitle.setVisible(true);
                 chat.setVisible(true);
                 inputChat.setVisible(true);
-                isChatToogle = true;
+                isChatToggle = true;
             }
         }
         if(event.key == "Enter" & isGameReady == false){
@@ -550,10 +562,13 @@ function create ()
             createMainPlayer(this);
             socket.emit("pseudoSet",JSON.stringify([pseudo,idClient,playerSkinChoice]));
         }
-        if(event.key == "Enter" & isChatToogle){
+        if(event.key == "Enter" & isChatToggle){
             socket.emit("chatToSend",{pseudo:pseudo,message:inputChat.text});
             inputChat.text = "";
         }
+    });
+    document.addEventListener('keyup', (event) => {
+        if(event.key == " ")jump = false;
     });
     socket.on('sendToChat',(message)=>{
         let text = message.pseudo+" | "+message.message + "\n";
@@ -582,7 +597,7 @@ function update ()
     //GAME STATUS
     if(isGameReady){
         //CURRENT PLAYER VELOCITY X
-        if ((pad.left || cursors.left.isDown)& player.body.velocity.x >= -VELOCITY_X_MAX_SPEED) {
+        if ((pad.left || left)& player.body.velocity.x >= -VELOCITY_X_MAX_SPEED & !isChatToggle) {
             //left
             if(player.body.velocity.y == 0){
                 player.anims.play('left'+playerSkinChoice, true);
@@ -594,7 +609,7 @@ function update ()
             socket.emit('playerPos',[]);
 
         }
-        else if ((pad.right || cursors.right.isDown) & player.body.velocity.x <= VELOCITY_X_MAX_SPEED) {
+        else if ((pad.right || right) & player.body.velocity.x <= VELOCITY_X_MAX_SPEED & !isChatToggle) {
             //right
             if(player.body.velocity.y == 0){
                 player.anims.play('right'+playerSkinChoice, true);
@@ -619,7 +634,7 @@ function update ()
         }
 
         //CURRENT PLAYER VELOCITY Y
-        if(cursors.space.isDown & player.body.blocked.down || pad.B & player.body.blocked.down){
+        if((jump & player.body.blocked.down || pad.B & player.body.blocked.down) & !isChatToggle){
             //jump
             player.setVelocityY(- VELOCITY_Y);
 
