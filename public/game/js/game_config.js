@@ -43,6 +43,51 @@ const TITLE_BOARD = {
     fixedHeight: 20
 };
 
+const CHAT_BOARD = {
+    fixedWidth:800,
+    fixedHeight: 500,
+    backgroundColor: "#dddddd",
+    fill: "#111111",
+    padding: {
+        left: 10,
+        right: 10,
+        top: 10,
+        bottom: 10,
+    },
+    font: "18px monospace"
+};
+
+const CHAT_TITLE = {
+    fill: "#111111",
+    backgroundColor: "#dddddd",
+    fixedWidth:800,
+    padding: {
+        left: 10,
+        right: 10,
+        top: 10,
+        bottom: 0,
+    },
+    align:"center",
+    fixedHeight: 30
+};
+
+const PSEUDO_INPUT = {
+    font: "18px monospace",
+    fill: "#111111",
+    padding: { x: 50, y: 10 },
+    backgroundColor: "#eeeeee",
+    color:"#111111",
+    align:"center"
+};
+
+const CHAT_INPUT = {
+    font: "18px monospace",
+    fill: "#111111",
+    padding: { x: 50, y: 10 },
+    backgroundColor: "#eeeeee",
+    color:"#111111",
+};
+
 const TIMER_TEXT = {
     font: "18px monospace",
     fill: "#ffffff",
