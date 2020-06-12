@@ -2,14 +2,18 @@ const LB_TARGET = document.getElementById("lb-list");
 const LB_DB = "./ressources/top10.json";
 const LB_TEMPLATE = document.getElementById("leaderboard-template");
 
-let fetchBoard = async () => {
-      const RESPONSE = await fetch(LB_DB);
-      const DATA = await RESPONSE.json();
+// let fetchBoard = async () => {
+//       const RESPONSE = await fetch(LB_DB);
+//       const DATA = await RESPONSE.json();
 
-      DATA.top.forEach(element => {
-            createTrophy(element);
-      });
-}
+//       DATA.top.forEach(element => {
+//             createTrophy(element);
+//       });
+// }
+let socket = io.connect();
+socket.emit('leaderbord',true);
+socket.on("sentscore",(scores)=>scores.forEach(element => {createTrophy(element)}));
+
 
 let createTrophy = (data) => {
       let trophy = document.importNode(LB_TEMPLATE.content, true);
@@ -31,4 +35,3 @@ let convertTime = (duration) => {
 
 // RUNNING
 
-fetchBoard();

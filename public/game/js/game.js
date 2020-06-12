@@ -156,6 +156,7 @@ function preload ()
 
     this.load.audio('backmusic', './audio/theme.mp3');
     this.load.audio('jumpfx', './audio/jump_11.wav');
+    this.load.audio('letsgo', './audio/letsgo.mp3');
 
 
     this.load.audio('backmusic', './audio/theme.mp3');
@@ -558,6 +559,10 @@ function update ()
         //startzone
         if(player.x >= startCollider.x & player.x <= (startCollider.x+16) & player.y+2 >= startCollider.y-150 & player.y <=startCollider.y){
             timerStart(this.time.now);
+            let gomaboy = this.sound.add('letsgo', {
+                volume: 0.2,
+            });
+            gomaboy.play();
             isReset = false;
         }
         if(player.x >= finishCollider.x & player.x <= (finishCollider.x+16) & player.y+2 >= finishCollider.y-600 & player.y <=finishCollider.y){
