@@ -9,6 +9,9 @@ let config = {
             debug: false
         }
     },
+    input: {
+        gamepad: true,
+    },
     scene: {
         preload: preload,
         create: create,
@@ -61,6 +64,9 @@ let isGameReady = false;
 let inputPseudo;
 let pseudoText;
 let skinChoiceList = [];
+
+//GAMEPAD
+
 
 //MAP
 let MAP;
@@ -190,6 +196,10 @@ function create ()
 {
     //RENDER FPS
     this.physics.world.setFPS(RENDER_FPS);
+
+    //GAMEPAD
+
+
 
     //MUSIC / FX
 
@@ -487,6 +497,14 @@ function create ()
 //GAME LOOP
 function update ()
 {
+    //GAMEPAD
+
+    let pad = Phaser.Input.Gamepad.Gamepad;
+
+    if(this.input.gamepad.total){
+        pad = this.input.gamepad.getPad(0);
+    }
+
     //GAME STATUS
     if(isGameReady){
         //CURRENT PLAYER VELOCITY X
