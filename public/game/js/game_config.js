@@ -27,6 +27,12 @@ const SCORE_BOARD = {
     fixedWidth:200,
     fixedHeight: 200,
     backgroundColor: "#00000050",
+    padding: {
+        left: 10,
+        right: 10,
+        top: 0,
+        bottom: 10,
+    },
     font: "10px monospace"
 };
 const TITLE_BOARD = {

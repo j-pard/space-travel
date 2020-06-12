@@ -6,7 +6,7 @@ const top10 = "./public/ressources/top10.json";
 
 
 
-const url = "mongodb://heroku_j058vh5r:qq76ccf0rv1iof58mnoju2paaa@ds019624.mlab.com:19624/heroku_j058vh5r";
+const url = process.env.MONGODB_URI;
 
 const mongo = require('mongodb');
 const MongoClient = require('mongodb').MongoClient;
