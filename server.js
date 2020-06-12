@@ -6,7 +6,7 @@ const top10="./public/ressources/top10.json";
 
 
 
-const url = process.env.MONGODB_URI;
+const url = "mongodb://heroku_j058vh5r:qq76ccf0rv1iof58mnoju2paaa@ds019624.mlab.com:19624/heroku_j058vh5r";
 
 const mongo = require('mongodb');
 const MongoClient = require('mongodb').MongoClient;
@@ -26,15 +26,17 @@ function addToMongo(myobj){
 }
 //JHON POUR TOI POUR SORT <3a
 function getScore(){
+    let result;
     MongoClient.connect(url, function(err, db) {
         if (err) throw err;
         var dbo = db.db("heroku_j058vh5r");
         let mysort = { time: 1 };
             dbo.collection("score").find().sort(mysort).toArray(function(err, result) {
                 if (err) throw err;
-                console.log(result);
+                console.log(JSON.stringify(result));
                 db.close();
-                return result;
+                return JSON.stringify(result);
+        
     });
 });
 }
@@ -170,6 +172,20 @@ io.sockets.on('connection',(socket) => {
         console.log(socket.pseudo + " send a message : " + message);
         socket.emit('messageToAll', {author: "You", text: message});
         socket.broadcast.emit('messageToAll', {author: socket.pseudo, text: message});
+    });
+    socket.on('leaderbord',()=>{
+         MongoClient.connect(url, function(err, db) {
+            if (err) throw err;
+            var dbo = db.db("heroku_j058vh5r");
+            let mysort = { time: 1 };
+                dbo.collection("score").find().sort(mysort).toArray(function(err, result) {
+                    if (err) throw err;
+                    console.log(JSON.stringify(result));
+                    db.close();
+                    socket.emit('sentscore',result) ;
+            
+        });
+    });
     });
 });
 
