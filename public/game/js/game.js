@@ -284,7 +284,7 @@ function create ()
     }
 
     //imput player pseudo - skin
-    pseudoText = this.add.text(GAME_WIDTH/2 - 170,GAME_HEIGHT/2 - 100, "Choisi ton pseudo!",{
+    pseudoText = this.add.text(GAME_WIDTH/2 - 170,GAME_HEIGHT/2 - 100, "Choisis ton pseudo!",{
         font: "30px monospace",
         fill: "#ffffff",
         padding: { x: 20, y: 10 },

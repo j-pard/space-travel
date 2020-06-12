@@ -45,3 +45,16 @@ L'équipe est formée de 5 développeurs juniors, en formation [BeCode](https://
 * HTML5 
 * CSS3
   * SASS
+
+## Sources
+* PNG : [PNG Tree](https://pngtree.com/)
+* Images : [Pinterest](https://www.pinterest.com)
+* Sons & musique: [CCMixter](http://dig.ccmixter.org/files/destinazione_altrove/59536)
+* Pixel Art : [Ansimuz](https://ansimuz.itch.io/)
+
+## Idées pour le futur
+* Adaptation mobile
+* Responsivité accrue
+* Plusieurs cartes
+* Room limitées dans le temps
+* Fontion tournois
