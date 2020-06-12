@@ -386,6 +386,8 @@ function create ()
     //leaderBoard
     titleLBoard =this.add.text(990,10,"Local Records",TITLE_BOARD).setScrollFactor(0);
     leaderBoard = this.add.text(990,30,"",SCORE_BOARD).setScrollFactor(0);
+
+    socket.emit("leaderbord",true);
     
     //update other players
     socket.on('updatePlayerMove',(data)=>{
@@ -470,6 +472,14 @@ function create ()
         }
         console.log(scoreList);
         LiveBoard.setText(text);
+    });
+    //leaderboard update
+    socket.on("sentscore",(scoreLeader)=>{
+        let text = "";
+        for(i in scoreLeader){
+            text += convertMilliLiveBoard(scoreLeader[i]) + "\n";
+        }
+        leaderBoard.setText(text);
     });
     //toggle timer and leaderboard visibility
     document.addEventListener('keypress',(event)=>{
