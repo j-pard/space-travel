@@ -6,7 +6,7 @@ const top10 = "./public/ressources/top10.json";
 
 
 
-const url = process.env.MONGODB_URI;
+const url = "mongodb://heroku_j058vh5r:qq76ccf0rv1iof58mnoju2paaa@ds019624.mlab.com:19624/heroku_j058vh5r";
 
 const mongo = require('mongodb');
 const MongoClient = require('mongodb').MongoClient;
@@ -164,6 +164,13 @@ io.sockets.on('connection', (socket) => {
         socket.broadcast.emit("newScore", score);
     });
 
+    //CHAT INGAME
+    socket.on("chatToSend",(message)=>{
+        if(message.message != ""){
+            socket.broadcast.emit("sendToChat",message);
+        }
+    });
+
     // CHAT
 
     socket.on('newPseudo', (pseudo) => {
@@ -183,7 +190,6 @@ io.sockets.on('connection', (socket) => {
             let mysort = { time: 1 };
             dbo.collection("score").find().sort(mysort).toArray(function (err, result) {
                 if (err) throw err;
-                console.log(JSON.stringify(result));
                 db.close();
                 socket.emit('sentscore', result);
 

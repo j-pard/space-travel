@@ -60,6 +60,12 @@ let scoreList = [];
 let leaderBoard;
 let titleLBoard;
 
+let chat;
+let chatTitle;
+let isChatToogle = false;
+let inputChat;
+let chatList = [];
+
 //GAME STATS
 let isGameReady = false;
 let isToggleTimer = false;
@@ -291,14 +297,7 @@ function create ()
         backgroundColor: "#00000050"
     }).setScrollFactor(0);
 
-    inputPseudo = this.add.rexInputText(GAME_WIDTH/2, GAME_HEIGHT/2, 200, 50, {
-        font: "18px monospace",
-        fill: "#111111",
-        padding: { x: 50, y: 10 },
-        backgroundColor: "#eeeeee",
-        color:"#111111",
-        align:"center"
-    }).setScrollFactor(0);
+    inputPseudo = this.add.rexInputText(GAME_WIDTH/2, GAME_HEIGHT/2, 200, 50, PSEUDO_INPUT).setScrollFactor(0);
 
     //create 8 choices skin
     for(let i = 0; i < 8; i++){
@@ -379,7 +378,7 @@ function create ()
     });
 
     //keyboard
-    enterKey = this.input.keyboard.addKey('enter');
+    //enterKey = this.input.keyboard.addKey('enter');
     restartKey = this.input.keyboard.addKey('f2');
     cursors = this.input.keyboard.createCursorKeys();
 
@@ -396,6 +395,15 @@ function create ()
     //leaderBoard
     titleLBoard =this.add.text(990,10,"Local Records",TITLE_BOARD).setScrollFactor(0);
     leaderBoard = this.add.text(990,30,"",SCORE_BOARD).setScrollFactor(0);
+
+    //chat
+    chat = this.add.text(GAME_WIDTH/2-400,GAME_HEIGHT/2-230, "", CHAT_BOARD).setScrollFactor(0);
+    chatTitle = this.add.text(GAME_WIDTH/2-400,GAME_HEIGHT/2-250, "Space Chat", CHAT_TITLE).setScrollFactor(0);
+    isChatToogle = false;
+    inputChat = this.add.rexInputText(GAME_WIDTH/2 + 3, GAME_HEIGHT - 50, 800, 50, CHAT_INPUT).setScrollFactor(0);
+    chat.setVisible(false);
+    chatTitle.setVisible(false);
+    inputChat.setVisible(false);
 
     socket.emit("leaderbord",true);
     
@@ -509,8 +517,53 @@ function create ()
                 leaderBoard.setVisible(false);
                 isToggleTimer = true;
             }
-            
         }
+        if(event.key == "c" & isGameReady == true){
+            if(isChatToogle){
+                chatTitle.setVisible(false);
+                chat.setVisible(false);
+                inputChat.setVisible(false);
+                isChatToogle = false;
+            }else{
+                chatTitle.setVisible(true);
+                chat.setVisible(true);
+                inputChat.setVisible(true);
+                isChatToogle = true;
+            }
+        }
+        if(event.key == "Enter" & isGameReady == false){
+            if(inputPseudo.text == ""){
+                pseudo = "SpaceMan"+idClient;
+            }else{
+                pseudo = inputPseudo.text;
+            }
+            inputPseudo.setScrollFactor(999);
+            pseudoText.setScrollFactor(999);
+            isGameReady = true;
+            if(pseudo == "maboy"){
+                playerSkinChoice = 9;
+            }
+            for(i in skinChoiceList){
+                skinChoiceList[i].input.enabled = false;
+                skinChoiceList[i].setVisible(false);
+            }
+            createMainPlayer(this);
+            socket.emit("pseudoSet",JSON.stringify([pseudo,idClient,playerSkinChoice]));
+        }
+        if(event.key == "Enter" & isChatToogle){
+            socket.emit("chatToSend",{pseudo:pseudo,message:inputChat.text});
+            inputChat.text = "";
+        }
+    });
+    socket.on('sendToChat',(message)=>{
+        let text = message.pseudo+" | "+message.message + "\n";
+        if(chatList.length >= 24)chatList.splice(0,1);
+        chatList.push(text);
+        let chattext = "";
+        for(el of chatList){
+            chattext += el;
+        }
+        chat.setText(chattext);
     });
 }
 
@@ -622,25 +675,7 @@ function update ()
         pseudoOverPlayer.x = player.x - PSEUDO_OFFSET_X;
         pseudoOverPlayer.y = player.y - PSEUDO_OFFSET_Y;
     }else{
-        if(enterKey.isDown){
-            if(inputPseudo.text == ""){
-                pseudo = "SpaceMan"+idClient;
-            }else{
-                pseudo = inputPseudo.text;
-            }
-            inputPseudo.setScrollFactor(999);
-            pseudoText.setScrollFactor(999);
-            isGameReady = true;
-            if(pseudo == "maboy"){
-                playerSkinChoice = 9;
-            }
-            for(i in skinChoiceList){
-                skinChoiceList[i].input.enabled = false;
-                skinChoiceList[i].setVisible(false);
-            }
-            createMainPlayer(this);
-            socket.emit("pseudoSet",JSON.stringify([pseudo,idClient,playerSkinChoice]));
-        }
+        
     }
 
 
