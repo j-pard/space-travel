@@ -23,6 +23,26 @@ const PSEUDO_CONFIG = {
     align: "center",
     fixedWidth:300
 };
+const SCORE_BOARD = {
+    fixedWidth:200,
+    fixedHeight: 200,
+    backgroundColor: "#00000050",
+    font: "10px monospace"
+};
+const TITLE_BOARD = {
+    fill: "#ffffff",
+    backgroundColor: "#00000050",
+    fixedWidth:200,
+    align:"center",
+    fixedHeight: 20
+};
+
+const TIMER_TEXT = {
+    font: "18px monospace",
+    fill: "#ffffff",
+    padding: { x: 20, y: 10 },
+    backgroundColor: "#00000050"
+};
 
 const PLAYER_SKIN_PATH = './img/frog.png';
 const TILE_SET_PATH = './img/tileset.png';

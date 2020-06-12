@@ -54,8 +54,12 @@ let LiveBoard;
 let titleBoard;
 let scoreList = [];
 
+let leaderBoard;
+let titleLBoard;
+
 //GAME STATS
 let isGameReady = false;
+let isToggleTimer = false;
 
 //INPUT PARAM  GAME START
 let inputPseudo;
@@ -116,7 +120,7 @@ function createMainPlayer(thisGame){
     pseudoOverPlayer = thisGame.add.text(player.x - PSEUDO_OFFSET_X ,player.y - PSEUDO_OFFSET_Y,pseudo,PSEUDO_CONFIG);
 }
 
-function createAllAnims(thisGame,keyName,configplace,id,frameRate,repeat){
+function createAllAnims(thisGame,keyName,configplace,id,frameRate,repeat,sprite){
     thisGame.anims.create({
         key: (keyName+id),
         frames: thisGame.anims.generateFrameNumbers('player'+id,configplace),
@@ -316,18 +320,18 @@ function create ()
 
     //create animations
     for(let i = 1; i <= 4; i++){
-        createAllAnims(this,'left',{ start: 10, end: 19 },i,15,-1);
-        createAllAnims(this,'right',{ start: 0, end: 9 },i,15,-1);
-        createAllAnims(this,'jumpleft',{ start: 20, end: 25 },i,10,0);
-        createAllAnims(this,'jumpright',{ start: 26, end: 31 },i,10,0);
-        createAllAnims(this,'stand',{ start: 32, end: 34 },i,5,-1);
+        createAllAnims(this,'left',{ start: 10, end: 19 },i,15,-1,"player");
+        createAllAnims(this,'right',{ start: 0, end: 9 },i,15,-1,"player");
+        createAllAnims(this,'jumpleft',{ start: 20, end: 25 },i,10,0,"player");
+        createAllAnims(this,'jumpright',{ start: 26, end: 31 },i,10,0,"player");
+        createAllAnims(this,'stand',{ start: 32, end: 34 },i,5,-1,"player");
     }
     for(let i = 5; i <= 8; i++){
-        createAllAnims(this,'left',{ start: 8, end: 15 },i,15,-1);
-        createAllAnims(this,'right',{ start: 0, end: 7 },i,15,-1);
-        createAllAnims(this,'jumpleft',{ start: 16, end: 19 },i,10,0);
-        createAllAnims(this,'jumpright',{ start: 20, end: 23 },i,10,0);
-        createAllAnims(this,'stand',{ start: 24, end: 27 },i,5,-1);
+        createAllAnims(this,'left',{ start: 8, end: 15 },i,15,-1,"player");
+        createAllAnims(this,'right',{ start: 0, end: 7 },i,15,-1,"player");
+        createAllAnims(this,'jumpleft',{ start: 16, end: 19 },i,10,0,"player");
+        createAllAnims(this,'jumpright',{ start: 20, end: 23 },i,10,0,"player");
+        createAllAnims(this,'stand',{ start: 24, end: 27 },i,5,-1,"player");
     }
     this.anims.create({
         key: 'left9',
@@ -365,35 +369,23 @@ function create ()
 
     //keyboard
     enterKey = this.input.keyboard.addKey('enter');
-    restartKey = this.input.keyboard.addKey('backspace');
+    restartKey = this.input.keyboard.addKey('f2');
     cursors = this.input.keyboard.createCursorKeys();
 
     //timer
     startCollider = MAP.findObject("tracker",obj => obj.name == "trackerstart");
     finishCollider = MAP.findObject("tracker",obj => obj.name == "trackerend");
 
-    timerText = this.add.text(950, 550, "Timer : ", {
-        font: "18px monospace",
-        fill: "#ffffff",
-        padding: { x: 20, y: 10 },
-        backgroundColor: "#00000050"
-    }).setScrollFactor(0);
+    timerText = this.add.text(950, 550, "Timer : ", TIMER_TEXT).setScrollFactor(0);
 
     //LiveBoard
-    titleBoard = this.add.text(10,10,"Live Records",{
-        fill: "#ffffff",
-        backgroundColor: "#00000050",
-        fixedWidth:200,
-        align:"center",
-        fixedHeight: 20
-    }).setScrollFactor(0);
-    LiveBoard = this.add.text(10,30,"",{
-        fixedWidth:200,
-        fixedHeight: 200,
-        backgroundColor: "#00000050",
-        font: "10px monospace"
-    }).setScrollFactor(0);
+    titleBoard = this.add.text(10,10,"Live Records",TITLE_BOARD).setScrollFactor(0);
+    LiveBoard = this.add.text(10,30,"",SCORE_BOARD).setScrollFactor(0);
 
+    //leaderBoard
+    titleLBoard =this.add.text(990,10,"Local Records",TITLE_BOARD).setScrollFactor(0);
+    leaderBoard = this.add.text(990,30,"",SCORE_BOARD).setScrollFactor(0);
+    
     //update other players
     socket.on('updatePlayerMove',(data)=>{
         data = JSON.parse(data);
@@ -480,7 +472,24 @@ function create ()
     });
     //toggle timer and leaderboard visibility
     document.addEventListener('keypress',(event)=>{
-        console.log(event);
+        if(event.key == "t"){
+            if(isToggleTimer){
+                LiveBoard.setVisible(true);
+                titleBoard.setVisible(true);
+                timerText.setVisible(true);
+                titleLBoard.setVisible(true);
+                leaderBoard.setVisible(true);
+                isToggleTimer = false;
+            }else{
+                timerText.setVisible(false);
+                LiveBoard.setVisible(false);
+                titleBoard.setVisible(false);
+                titleLBoard.setVisible(false);
+                leaderBoard.setVisible(false);
+                isToggleTimer = true;
+            }
+            
+        }
     });
 }
 
