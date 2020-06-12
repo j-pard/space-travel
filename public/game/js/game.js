@@ -529,7 +529,7 @@ function update ()
     //GAME STATUS
     if(isGameReady){
         //CURRENT PLAYER VELOCITY X
-        if (cursors.left.isDown & player.body.velocity.x >= -VELOCITY_X_MAX_SPEED || pad.left & player.body.velocity.x >= -VELOCITY_X_MAX_SPEED) {
+        if ((pad.left || cursors.left.isDown)& player.body.velocity.x >= -VELOCITY_X_MAX_SPEED) {
             //left
             if(player.body.velocity.y == 0){
                 player.anims.play('left'+playerSkinChoice, true);
@@ -541,7 +541,7 @@ function update ()
             socket.emit('playerPos',[]);
 
         }
-        else if (cursors.right.isDown & player.body.velocity.x <= VELOCITY_X_MAX_SPEED || pad.right & player.body.velocity.x >= -VELOCITY_X_MAX_SPEED) {
+        else if ((pad.right || cursors.right.isDown) & player.body.velocity.x <= VELOCITY_X_MAX_SPEED) {
             //right
             if(player.body.velocity.y == 0){
                 player.anims.play('right'+playerSkinChoice, true);
