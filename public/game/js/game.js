@@ -290,6 +290,7 @@ function create ()
         let choice = this.add.image(180 + (i*120),450,("playerIcon"+(i+1))).setScrollFactor(0);
         choice.setInteractive();
         choice.tint= 0x555555;
+        if(i == 0)choice.tint = 0xffffff;
         choice.input.enabled = true;
         choice.on('clicked',(choice)=>{
             playerSkinChoice = (i+1);
@@ -476,6 +477,10 @@ function create ()
         }
         console.log(scoreList);
         LiveBoard.setText(text);
+    });
+    //toggle timer and leaderboard visibility
+    document.addEventListener('keypress',(event)=>{
+        console.log(event);
     });
 }
 
