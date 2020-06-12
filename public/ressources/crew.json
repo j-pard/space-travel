@@ -4,7 +4,7 @@
             "firstname" : "Jonathan",
             "rank" : "Synchronisateur de variables",
             "icon" : "../img/john.png",
-            "collaboration" : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus nihil placeat dolores quam voluptas, alias vitae corporis non impedit ratione autem sed repellendus ad nam accusantium corrupti mollitia ea nesciunt.",
+            "collaboration" : "Developpement de l'architecture, stabilisation de la plateforme et correction des correctifs.",
             "github" : "https://github.com/j-pard",
             "linkedin" : "https://www.linkedin.com/in/pardons-jonathan/"
       },
@@ -13,16 +13,16 @@
             "firstname" : "Hugo",
             "rank" : "Motoriste physique",
             "icon" : "../img/hugo.png",
-            "collaboration" : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus nihil placeat dolores quam voluptas, alias vitae corporis non impedit ratione autem sed repellendus ad nam accusantium corrupti mollitia ea nesciunt.",
+            "collaboration" : "Developpement de la physique non-linéaire, rebond des corps stéllaires et implementation de fonctions non vitales.",
             "github" : "https://github.com/HugoBricoult",
             "linkedin" : "https://www.linkedin.com/in/hugo-bricoult/"
       },
       {
             "lastname" : "Amjahad",
             "firstname" : "Soufiane",
-            "rank" : "Ingénieur ballistique",
+            "rank" : "Tyran du code",
             "icon" : "../img/souf.png",
-            "collaboration" : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus nihil placeat dolores quam voluptas, alias vitae corporis non impedit ratione autem sed repellendus ad nam accusantium corrupti mollitia ea nesciunt.",
+            "collaboration" : "Organisation ordonnée des bits stéllaires et non stéllaires, soutien idéaliste du motoriste physique et imposition binaire.",
             "github" : "https://github.com/AmjSf",
             "linkedin" : "https://www.linkedin.com/in/soufiane-amjahad/"
       },
@@ -31,7 +31,7 @@
             "firstname" : "Lloyd",
             "rank" : "Ingénieur de collision",
             "icon" : "../img/lloyd.png",
-            "collaboration" : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus nihil placeat dolores quam voluptas, alias vitae corporis non impedit ratione autem sed repellendus ad nam accusantium corrupti mollitia ea nesciunt.",
+            "collaboration" : "Etude des trajectoires, morcellement des débris et synthétisation des rapports d'échec critique.",
             "github" : "https://github.com/Lloydcol",
             "linkedin" : "https://www.linkedin.com/in/colart-lloyd/"
       },
@@ -40,7 +40,7 @@
             "firstname" : "Timothy",
             "rank" : "Holographeur",
             "icon" : "../img/tim.png",
-            "collaboration" : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus nihil placeat dolores quam voluptas, alias vitae corporis non impedit ratione autem sed repellendus ad nam accusantium corrupti mollitia ea nesciunt.",
+            "collaboration" : "Design et étude des contraintes des nouvelles combinaisons non étanches. Etude de la viabilité sans casque.",
             "github" : "https://github.com/TimothyTedaldi",
             "linkedin" : "https://www.linkedin.com/in/timothy-tedaldi-dev/"
       }

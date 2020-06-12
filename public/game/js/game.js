@@ -9,6 +9,9 @@ let config = {
             debug: false
         }
     },
+    input: {
+        gamepad: true,
+    },
     scene: {
         preload: preload,
         create: create,
@@ -71,6 +74,9 @@ let isToggleTimer = false;
 let inputPseudo;
 let pseudoText;
 let skinChoiceList = [];
+
+//GAMEPAD
+
 
 //MAP
 let MAP;
@@ -201,6 +207,10 @@ function create ()
 {
     //RENDER FPS
     this.physics.world.setFPS(RENDER_FPS);
+
+    //GAMEPAD
+
+
 
     //MUSIC / FX
 
@@ -560,10 +570,19 @@ function create ()
 //GAME LOOP
 function update ()
 {
+    //GAMEPAD
+
+    let pad = Phaser.Input.Gamepad.Gamepad;
+
+    if (this.input.gamepad.total){
+            pad = this.input.gamepad.getPad(0);
+    }
+
+
     //GAME STATUS
     if(isGameReady){
         //CURRENT PLAYER VELOCITY X
-        if (cursors.left.isDown & player.body.velocity.x >= -VELOCITY_X_MAX_SPEED) {
+        if ((pad.left || cursors.left.isDown)& player.body.velocity.x >= -VELOCITY_X_MAX_SPEED) {
             //left
             if(player.body.velocity.y == 0){
                 player.anims.play('left'+playerSkinChoice, true);
@@ -575,7 +594,7 @@ function update ()
             socket.emit('playerPos',[]);
 
         }
-        else if (cursors.right.isDown & player.body.velocity.x <= VELOCITY_X_MAX_SPEED) {
+        else if ((pad.right || cursors.right.isDown) & player.body.velocity.x <= VELOCITY_X_MAX_SPEED) {
             //right
             if(player.body.velocity.y == 0){
                 player.anims.play('right'+playerSkinChoice, true);
@@ -600,7 +619,7 @@ function update ()
         }
 
         //CURRENT PLAYER VELOCITY Y
-        if(cursors.space.isDown & player.body.blocked.down){
+        if(cursors.space.isDown & player.body.blocked.down || pad.B & player.body.blocked.down){
             //jump
             player.setVelocityY(- VELOCITY_Y);
 
@@ -644,7 +663,7 @@ function update ()
             }
         }
 
-        if(restartKey.isDown & !isReset){
+        if(restartKey.isDown & !isReset || pad.R2 & !isReset){
             isReset = true;
             player.x = 210;
             player.y = 2070;
