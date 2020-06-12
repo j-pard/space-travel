@@ -162,7 +162,7 @@ io.sockets.on('connection',(socket) => {
     // CHAT
 
     socket.on('newPseudo', (pseudo) => {
-        socket.pseudo = pseudo;
+        socket.pseudo = pseudo.trim();
         console.log("Last user is know as " + socket.pseudo);
     });
 
