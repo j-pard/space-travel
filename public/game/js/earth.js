@@ -63,6 +63,11 @@ let decorsOverlay;
 let decors;
 let spawnPoint;
 
+//Fix 144/60hz loop rate
+let timeInterval = 0;
+let isLowFrequence = true;
+let fixLowFrequenceMultiplier = 2;
+
 let jumpSound;
 function timerStart(now){
     if(!isStart){
