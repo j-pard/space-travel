@@ -1,3 +1,11 @@
+let socket; 
+            
+        let idClient; 
+        let playerList;
+
+        //Enregistrement client ID et liste des joueurs
+        
+
 //CURRENT PLAYER AND PLAYERS LIST
 let player;
 let players = [];
@@ -189,11 +197,33 @@ class EarthScene extends Phaser.Scene {
     }
 
     create(){
+        socket = io.connect();
+        socket.emit('room','earth');
+        socket.on('id',(pl)=>{
+        idClient = parseInt(pl.id);
+        playerList = JSON.parse(pl.plist);
+        for(let i = 0; i < playerList.length;i++){
+            if(playerList[i].id != idClient & playerList[i].map == 'earth'){
+                let p = this.physics.add.sprite(210,2070,'player'+playerList[i].skin);
+                //p.setCollideWorldBounds(true);
+                p.setBounce(0);
+                p.id = playerList[i].id;
+                p.setScale(0.5);
+                this.physics.add.collider(p,Road);
+                this.physics.add.collider(p,plateforms);
+                players.push(p);
+    
+                let text = this.add.text(p.x - PSEUDO_OFFSET_X,p.y - PSEUDO_OFFSET_Y,playerList[i].pseudo,PSEUDO_CONFIG);
+                text.id = playerList[i].id;
+                playersPseudoList.push(text);
+            }
+        }
+    });
         //RENDER FPS
     this.physics.world.setFPS(RENDER_FPS);
 
     //GAMEPAD
-
+        socket.emit('debug',"debug");
 
 
     //MUSIC / FX
@@ -256,22 +286,7 @@ class EarthScene extends Phaser.Scene {
 
 
     //create other players
-    for(let i = 0; i < playerList.length;i++){
-        if(playerList[i].id != idClient){
-            let p = this.physics.add.sprite(210,2070,'player'+playerList[i].skin);
-            //p.setCollideWorldBounds(true);
-            p.setBounce(0);
-            p.id = playerList[i].id;
-            p.setScale(0.5);
-            this.physics.add.collider(p,Road);
-            this.physics.add.collider(p,plateforms);
-            players.push(p);
-
-            let text = this.add.text(p.x - PSEUDO_OFFSET_X,p.y - PSEUDO_OFFSET_Y,playerList[i].pseudo,PSEUDO_CONFIG);
-            text.id = playerList[i].id;
-            playersPseudoList.push(text);
-        }
-    }
+    
 
     //imput player pseudo - skin
     pseudoText = this.add.text(GAME_WIDTH/2 - 170,GAME_HEIGHT/2 - 100, "Choisis ton pseudo!",{
@@ -305,12 +320,6 @@ class EarthScene extends Phaser.Scene {
             gameObject.emit('clicked', gameObject);
         }
     }, this);
-
-
-
-
-
-
 
     //create animations
     for(let i = 1; i <= 4; i++){
@@ -439,7 +448,7 @@ class EarthScene extends Phaser.Scene {
     //add a player
     socket.on('new_player',(newPlayer)=>{
         let newP = JSON.parse(newPlayer);
-        if(newP.id != idClient){
+        if(newP.id != idClient & newP.map == "earth"){
             playerList.push(newP);
             let p = this.physics.add.sprite(210,2070,'player'+newP.skin);
             //p.setCollideWorldBounds(true);
@@ -455,7 +464,6 @@ class EarthScene extends Phaser.Scene {
             playersPseudoList.push(text);
         }
     });
-    console.log(this.input.keyboard);
     socket.on("newScore",(scoreReturn)=>{
         let isIn = false;
         for(let i = 0; i < scoreList.length;i++){
@@ -477,7 +485,6 @@ class EarthScene extends Phaser.Scene {
         for(let i = 0; i < scoreList.length; i++){
             text += convertMilliLiveBoard(scoreList[i]) + "\n";
         }
-        console.log(scoreList);
         LiveBoard.setText(text);
     });
     //leaderboard update
@@ -491,7 +498,6 @@ class EarthScene extends Phaser.Scene {
     //toggle timer and leaderboard visibility
     document.addEventListener('keypress',(event)=>{
         
-        console.log(event.key);
         if(event.key == " ")jump = true;
         if(event.key == "t" & !isChatToggle){
             if(isToggleTimer){

@@ -18,20 +18,11 @@
     
     <script src="/socket.io/socket.io.js"></script>
     <script src="./js/earth.js"></script>
+    <script src="./js/menu.js"></script>
     <script>
-        let socket = io.connect();
-            
-        let idClient; 
-        let playerList;
-
-        //Enregistrement client ID et liste des joueurs
-        socket.on('id',(id)=>{
-            idClient = parseInt(id);
-        });
-        socket.on('player_list',(pl)=>{
-        playerList = JSON.parse(pl);
         
-    });
+        
+    
 
     </script>
 

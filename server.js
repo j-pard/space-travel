@@ -97,72 +97,82 @@ APP.get("/", (req, res) => {
 // GAME
 //socket io
 let io = require('socket.io').listen(SERVER);
-
 // Quand un joueur se connect, initiation joueur
 io.sockets.on('connection', (socket) => {
-    let id = generateRandom();
-    let player_param = {
-        "id": id,
-        "posx": 100,
-        "posy": 450,
-        "velx": 0,
-        "vely": 0,
-        "anim": "right",
-        "pseudo": "SpaceMan" + id,
-        "skin": 1
-    };
+    
+    socket.on("room",msg=>{
+        socket.join(msg);
+        let id = generateRandom();
+        let player_param = {
+            "id": id,
+            "posx": 100,
+            "posy": 450,
+            "velx": 0,
+            "vely": 0,
+            "anim": "right",
+            "pseudo": "SpaceMan" + id,
+            "skin": 1,
+            "map":msg
+        };
 
-    player_list.push(player_param);
+        player_list.push(player_param);
 
-    socket.id = id;
-    socket.emit('player_list', JSON.stringify(player_list));
-    socket.emit('id', socket.id);
+        socket.id = id;
+        socket.emit('id', {id:socket.id,plist:JSON.stringify(player_list)});
+        
 
-    //update new player
-    socket.broadcast.emit('new_player', JSON.stringify(player_param));
+        //update new player
+        
 
-    //update disconnect
-    socket.on('disconnect', () => {
-        id_list.delete(socket.id);
-        for (el in player_list) {
-            if (player_list[el].id == socket.id) {
-                player_list.splice(el, 1);
-                socket.broadcast.emit('remove_player', socket.id);
+        
+        socket.to('earth').emit('new_player', JSON.stringify(player_param));
+        
+
+        //update disconnect
+        socket.on('disconnect', () => {
+            console.log("connected");
+            id_list.delete(socket.id);
+            for (el in player_list) {
+                if (player_list[el].id == socket.id) {
+                    player_list.splice(el, 1);
+                    socket.to('earth').emit('remove_player', socket.id);
+                }
             }
-        }
-        //socket.broadcast.emit('remove_player',JSON.stringify(player_list));
-    });
+            //socket.broadcast.emit('remove_player',JSON.stringify(player_list));
+        });
 
-    //Mouvement update
-    socket.on('playerMove', (data) => {
-        for (el in player_list) {
-            if (data[4] == player_list[el].id) {
-                data.push(player_list[el].pseudo);
-                break;
+        //Mouvement update
+        socket.on('playerMove', (data) => {
+            for (el in player_list) {
+                if (data[4] == player_list[el].id) {
+                    data.push(player_list[el].pseudo);
+                    break;
+                }
             }
-        }
-        data = JSON.stringify(data);
-        socket.broadcast.emit('updatePlayerMove', data);
-    });
+            data = JSON.stringify(data);
+            socket.to('earth').emit('updatePlayerMove', data);
+        });
 
-    socket.on('pseudoSet', (pseudo) => {
-        let data = JSON.parse(pseudo);
-        for (el in player_list) {
-            if (data[1] == player_list[el].id) {
-                player_list[el].pseudo = data[0];
-                break;
+        socket.on('pseudoSet', (pseudo) => {
+            let data = JSON.parse(pseudo);
+            for (el in player_list) {
+                if (data[1] == player_list[el].id) {
+                    player_list[el].pseudo = data[0];
+                    break;
+                }
             }
-        }
-        socket.broadcast.emit('updatePseudo', pseudo);
-    });
+            socket.to('earth').emit('updatePseudo', pseudo);
+        });
 
-    socket.on('score', (score) => {/* 
-        let mylist=readTopToList(top10);
-        let newlist=checkAndAddToTop10(mylist,score);
-        writeListToTop(top10,newlist); */
-        addToMongo(score);
-        socket.broadcast.emit("newScore", score);
+        socket.on('score', (score) => {/* 
+            let mylist=readTopToList(top10);
+            let newlist=checkAndAddToTop10(mylist,score);
+            writeListToTop(top10,newlist); */
+            addToMongo(score);
+            socket.to('earth').emit("newScore", score);
+        });
     });
+    
 
     //CHAT INGAME
     socket.on("chatToSend",(message)=>{
