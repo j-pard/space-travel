@@ -563,6 +563,13 @@ class EarthScene extends Phaser.Scene {
     }
 
     update(){
+
+        //6-7 144hz
+        //16 60hz 
+        isLowFrequence = ((this.time.now - timeInterval) > 12) ? true : false;
+        timeInterval = this.time.now;
+        fixLowFrequenceMultiplier = isLowFrequence ? (144/60) : 1;
+
         //GAMEPAD
 
     let pad = Phaser.Input.Gamepad.Gamepad;
@@ -581,9 +588,9 @@ class EarthScene extends Phaser.Scene {
                 player.anims.play('left'+playerSkinChoice, true);
             }
 
-            player.setVelocityX(player.body.velocity.x - VELOCITY_RIGHT_LEFT_CHANGE_X);
+            player.setVelocityX(player.body.velocity.x - (VELOCITY_RIGHT_LEFT_CHANGE_X * fixLowFrequenceMultiplier));
             //emit
-            socket.emit('playerMove',[player.x,player.y,player.body.velocity.x - VELOCITY_RIGHT_LEFT_CHANGE_X,player.body.velocity.y,idClient,'left'+playerSkinChoice]);
+            socket.emit('playerMove',[player.x,player.y,player.body.velocity.x - (VELOCITY_RIGHT_LEFT_CHANGE_X * fixLowFrequenceMultiplier),player.body.velocity.y,idClient,'left'+playerSkinChoice]);
             socket.emit('playerPos',[]);
 
         }
@@ -593,15 +600,15 @@ class EarthScene extends Phaser.Scene {
                 player.anims.play('right'+playerSkinChoice, true);
             }
 
-            player.setVelocityX(player.body.velocity.x +VELOCITY_RIGHT_LEFT_CHANGE_X);
+            player.setVelocityX(player.body.velocity.x +(VELOCITY_RIGHT_LEFT_CHANGE_X * fixLowFrequenceMultiplier));
             //emit
-            socket.emit('playerMove',[player.x,player.y,player.body.velocity.x + VELOCITY_RIGHT_LEFT_CHANGE_X,player.body.velocity.y,idClient,'right'+playerSkinChoice]);
+            socket.emit('playerMove',[player.x,player.y,player.body.velocity.x + (VELOCITY_RIGHT_LEFT_CHANGE_X * fixLowFrequenceMultiplier),player.body.velocity.y,idClient,'right'+playerSkinChoice]);
         }
         else{ //stop if nothings (with innertie)
-            if(player.body.velocity.x >= VELOCITY_STOP_SPEED){
-                player.setVelocityX(player.body.velocity.x - VELOCITY_STOP_SPEED);
-            }else if(player.body.velocity.x <= -VELOCITY_STOP_SPEED){
-                player.setVelocityX(player.body.velocity.x + VELOCITY_STOP_SPEED);
+            if(player.body.velocity.x >= (VELOCITY_STOP_SPEED*fixLowFrequenceMultiplier)){
+                player.setVelocityX(player.body.velocity.x - (VELOCITY_STOP_SPEED*fixLowFrequenceMultiplier));
+            }else if(player.body.velocity.x <= -(VELOCITY_STOP_SPEED*fixLowFrequenceMultiplier)){
+                player.setVelocityX(player.body.velocity.x + (VELOCITY_STOP_SPEED*fixLowFrequenceMultiplier));
             }else{
                 player.setVelocityX(0);
                 if(player.body.velocity.y == 0){
