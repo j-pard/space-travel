@@ -15,10 +15,10 @@ function addToMongo(myobj) {
     MongoClient.connect(url, function (err, db) {
         if (err) throw err;
         var dbo = db.db("heroku_j058vh5r");
-        dbo.collection("score").find({ pseudo: myobj.pseudo }).toArray(function (err, result) {
+        dbo.collection(myobj.map).find({ pseudo: myobj.pseudo }).toArray(function (err, result) {
             if (err) throw err;
             if (!result[0]) {
-                dbo.collection("score").insertOne(myobj, function (err, res) {
+                dbo.collection(myobj.map).insertOne(myobj, function (err, res) {
                     if (err) throw err;
                     console.log("1 document inserted");
                     db.close();
@@ -193,16 +193,15 @@ io.sockets.on('connection', (socket) => {
         socket.emit('messageToAll', { author: "You", text: message });
         socket.broadcast.emit('messageToAll', { author: socket.pseudo, text: message });
     });
-    socket.on('leaderbord', () => {
+    socket.on('leaderbord', (table) => {
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;
             var dbo = db.db("heroku_j058vh5r");
             let mysort = { time: 1 };
-            dbo.collection("score").find().sort(mysort).toArray(function (err, result) {
+            dbo.collection(table).find().sort(mysort).toArray(function (err, result) {
                 if (err) throw err;
                 db.close();
                 socket.emit('sentscore', result);
-
             });
         });
     });

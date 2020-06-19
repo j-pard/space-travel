@@ -3,8 +3,10 @@ const GAME_WIDTH = 1200;
 const GAME_HEIGHT = 600;
 const GRAVITY = 900;
 const RENDER_FPS = 144;
-const PLAYER_FRAME_WIDTH = 80;
-const PLAYER_FRAME_HEIGT = 80;
+const PLAYER_FRAME_SIZE = [
+    {frameWidth: 85, frameHeight: 80},
+    {frameWidth: 80, frameHeight: 80}
+];
 const SPAWN_X = 100;
 const SPAWN_Y = 450;
 const VELOCITY_RIGHT_LEFT_CHANGE_X = 5;
@@ -95,6 +97,15 @@ const TIMER_TEXT = {
     backgroundColor: "#00000050"
 };
 
-const PLAYER_SKIN_PATH = './img/frog.png';
-const TILE_SET_PATH = './img/tileset.png';
-const MAP_PATH = './map/cityMap.json';
+const PLAYERS_SKIN_PATH = [
+    './img/player1.png',
+    './img/player2.png',
+    './img/player3.png',
+    './img/player4.png',
+    './img/player5.png',
+    './img/player6.png',
+    './img/player7.png',
+    './img/player8.png',
+    './img/frog.png'
+];
+
