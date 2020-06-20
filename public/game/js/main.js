@@ -62,6 +62,7 @@ let isGameReady = false;
 let isToggleTimer = false;
 
 //INPUT PARAM  GAME START
+let blackOverlay;
 let inputPseudo;
 let pseudoText;
 let skinChoiceList = [];
@@ -147,7 +148,12 @@ function createAllAnims(sceneGame,keyName,configplace,id,frameRate,repeat,sprite
 
 function convertMilliLiveBoard(scoreReturn){
     let d = new Date(scoreReturn.time);
-    let scoreSet = d.getMinutes()+" : "+d.getSeconds()+" : "+d.getMilliseconds()+ " | "+scoreReturn.pseudo;
+    let sec = (d.getSeconds()).toString();
+    let mil = (d.getMilliseconds()).toString();
+    if(sec.length == 1)sec = '0'+sec;
+    if(mil.length == 1)mil = '00'+mil;
+    if(mil.length == 2)mil = '0'+mil;
+    let scoreSet = d.getMinutes()+" : "+sec+" : "+mil+ " | "+scoreReturn.pseudo;
     return scoreSet;
 }
 
@@ -223,17 +229,12 @@ soundback.play();
 
 jumpSound = scene.sound.add('jumpfx', {volume: 0.1});
 
-//BG MAP
-
-
-
-//CREATE MAP
-
-
-
-//create other players
-
-
+//Overlay
+blackOverlay = scene.add.text(0,0,"",{
+    backgroundColor: "#000000dd",
+    fixedWidth:GAME_WIDTH,
+    fixedHeight: GAME_HEIGHT
+});
 //imput player pseudo - skin
 pseudoText = scene.add.text(GAME_WIDTH/2 - 170,GAME_HEIGHT/2 - 100, "Choisis ton pseudo!",{
     font: "30px monospace",
@@ -324,6 +325,7 @@ scene.input.keyboard.on('keydown', (event)=>{if(event.key == "ArrowLeft")left = 
 scene.input.keyboard.on('keyup', (event)=>{if(event.key == "ArrowLeft")left = false;}, scene);
 scene.input.keyboard.on('keydown', (event)=>{if(event.key == "ArrowRight")right = true;}, scene);
 scene.input.keyboard.on('keyup', (event)=>{if(event.key == "ArrowRight")right = false;}, scene);
+
 
 //timer
 
@@ -436,6 +438,8 @@ socket.on("newScore",(scoreReturn)=>{
 socket.on("sentscore",(scoreLeader)=>{
     let text = "";
     for(let i = 0 ; i < scoreLeader.length;i++){
+        if(i < 10)text += " "+(i+1)+".  ";
+        if(i >= 10)text += (i+1)+".  ";
         text += convertMilliLiveBoard(scoreLeader[i]) + "\n";
     }
     leaderBoard.setText(text);
@@ -480,8 +484,9 @@ document.addEventListener('keypress',(event)=>{
         }else{
             pseudo = inputPseudo.text;
         }
-        inputPseudo.setScrollFactor(999);
-        pseudoText.setScrollFactor(999);
+        inputPseudo.setVisible(false);
+        pseudoText.setVisible(false);
+        blackOverlay.setVisible(false);
         isGameReady = true;
         if(pseudo == "maboy"){
             playerSkinChoice = 9;
