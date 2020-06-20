@@ -1,5 +1,6 @@
 let earthScene = new EarthScene(); 
 let menu = new Menu();
+let marsScene = new MarsScene();
 
 let config = {
     type: Phaser.AUTO,
@@ -30,6 +31,7 @@ let config = {
 let game = new Phaser.Game(config);
 game.scene.add('Menu',menu);
 game.scene.add('EarthScene',earthScene);
+game.scene.add('MarsScene',marsScene);
 game.scene.start('Menu');
 
 

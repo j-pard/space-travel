@@ -1,10 +1,5 @@
 //Variables du niveaux
 let MAP_NAME = "earth";
-let TILE_SET_PATH = './img/tileset.png';
-let MAP_PATH = './map/cityMap.json';
-let BG1_PATH = './environment/bg-1.png';
-let BG2_PATH = './environment/bg-2.png';
-let BG3_PATH = './environment/bg-3.png';
 let SPAWN_POINT = [210,2070];
 let UP_START_ZONE = 150;
 let UP_FINISH_ZONE = 600;
@@ -82,6 +77,10 @@ let Road;
 let decorsOverlay;
 let decors;
 let spawnPoint;
+
+let bg1;
+let bg2;
+let bg3;
 
 //Fix 144/60hz loop rate
 let timeInterval = 0;
@@ -226,51 +225,10 @@ jumpSound = scene.sound.add('jumpfx', {volume: 0.1});
 
 //BG MAP
 
-scene.BG1 = scene.add.tileSprite(0 ,-5, scene.cameras.main.width / 4, scene.cameras.main.height / 4, "bg1");
-let scaleX1 = scene.cameras.main.width / scene.BG1.width
-let scaleY1 = scene.cameras.main.height / scene.BG1.height
-scene.BG1.setOrigin(0, 0);
-let scale1 = Math.max(scaleX1, scaleY1);
-scene.BG1.setScale(scale1).setScrollFactor(0);
 
-scene.BG2 = scene.add.tileSprite(0 ,-5, scene.cameras.main.width / 4, scene.cameras.main.height / 4, "bg2");
-let scaleX2 = scene.cameras.main.width / scene.BG2.width
-let scaleY2 = scene.cameras.main.height / scene.BG2.height
-scene.BG2.setOrigin(0, 0);
-let scale2 = Math.max(scaleX2, scaleY2);
-scene.BG2.setScale(scale2).setScrollFactor(0);
-
-scene.BG3 = scene.add.tileSprite(0 ,-5, scene.cameras.main.width / 3, scene.cameras.main.height / 3, "bg3");
-let scaleX3 = scene.cameras.main.width / scene.BG3.width
-let scaleY3 = scene.cameras.main.height / scene.BG3.height
-scene.BG3.setOrigin(0, 0);
-let scale3 = Math.max(scaleX3, scaleY3);
-scene.BG3.setScale(scale3).setScrollFactor(0);
 
 //CREATE MAP
-MAP = scene.make.tilemap({ key: "map"});
-tset = MAP.addTilesetImage("road", "tiles");
 
-Road = MAP.createStaticLayer("road", tset, 0, 0);
-Road.setCollisionByProperty({ collides: true });
-Road.setScale(1);
-
-/* const debugGraphics = scene.add.graphics().setAlpha(0.75);
-Road.renderDebug(debugGraphics, {
-    tileColor: null, // Color of non-colliding tiles
-    collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
-    faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
-   }); */
-
-plateforms = MAP.createStaticLayer("plateforms", tset, 0, 0);
-plateforms.setCollisionByProperty({ collides: true });
-plateforms.setScale(1);
-
-
-decorsOverlay = MAP.createStaticLayer("decors overlay", tset, 0, 0);
-decors = MAP.createStaticLayer("decors", tset, 0, 0);
-
-spawnPoint = MAP.findObject("spawn",(dec)=> dec.name == "spawn");
 
 
 //create other players
@@ -368,8 +326,7 @@ scene.input.keyboard.on('keydown', (event)=>{if(event.key == "ArrowRight")right 
 scene.input.keyboard.on('keyup', (event)=>{if(event.key == "ArrowRight")right = false;}, scene);
 
 //timer
-startCollider = MAP.findObject("tracker",obj => obj.name == "trackerstart");
-finishCollider = MAP.findObject("tracker",obj => obj.name == "trackerend");
+
 
 timerText = scene.add.text(950, 550, "Timer : ", TIMER_TEXT).setScrollFactor(0);
 
@@ -673,9 +630,9 @@ function updateGame(scene){
 
 
     //bg update
-    scene.BG1.tilePositionX -= .03;
-    scene.BG2.tilePositionX += .02;
-    scene.BG3.tilePositionX -= .01;
+    bg1.tilePositionX -= .03;
+    bg2.tilePositionX += .02;
+    bg3.tilePositionX -= .01;
     }
 
 

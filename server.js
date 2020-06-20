@@ -28,7 +28,7 @@ function addToMongo(myobj) {
                     //update
                     var myquery = { pseudo: myobj.pseudo };
                     var newvalues = { $set: { time: myobj.time } };
-                    dbo.collection("score").updateOne(myquery, newvalues, function (err, res) {
+                    dbo.collection(myobj.map).updateOne(myquery, newvalues, function (err, res) {
                         if (err) throw err;
                         console.log("1 document updated");
                         db.close();
@@ -125,7 +125,7 @@ io.sockets.on('connection', (socket) => {
         
 
         
-        socket.to('earth').emit('new_player', JSON.stringify(player_param));
+        socket.to(msg).emit('new_player', JSON.stringify(player_param));
         
 
         //update disconnect
@@ -135,7 +135,7 @@ io.sockets.on('connection', (socket) => {
             for (el in player_list) {
                 if (player_list[el].id == socket.id) {
                     player_list.splice(el, 1);
-                    socket.to('earth').emit('remove_player', socket.id);
+                    socket.to(msg).emit('remove_player', socket.id);
                 }
             }
             //socket.broadcast.emit('remove_player',JSON.stringify(player_list));
@@ -150,7 +150,7 @@ io.sockets.on('connection', (socket) => {
                 }
             }
             data = JSON.stringify(data);
-            socket.to('earth').emit('updatePlayerMove', data);
+            socket.to(msg).emit('updatePlayerMove', data);
         });
 
         socket.on('pseudoSet', (pseudo) => {
@@ -161,7 +161,7 @@ io.sockets.on('connection', (socket) => {
                     break;
                 }
             }
-            socket.to('earth').emit('updatePseudo', pseudo);
+            socket.to(msg).emit('updatePseudo', pseudo);
         });
 
         socket.on('score', (score) => {/* 
@@ -169,7 +169,7 @@ io.sockets.on('connection', (socket) => {
             let newlist=checkAndAddToTop10(mylist,score);
             writeListToTop(top10,newlist); */
             addToMongo(score);
-            socket.to('earth').emit("newScore", score);
+            socket.to(msg).emit("newScore", score);
         });
     });
     
