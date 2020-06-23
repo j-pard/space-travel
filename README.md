@@ -57,7 +57,7 @@ L'équipe est formée de 5 développeurs juniors, en formation [BeCode](https://
 * Responsivité accrue
 * Plusieurs cartes
 * Room limitées dans le temps
-* Fontion tournois
+* Fonction tournois
 
 ## Changelog
 * v0.2.0 : Equilibrage 60hz/144hz
