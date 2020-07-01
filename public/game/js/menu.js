@@ -4,6 +4,8 @@ let lvl1;
 let lvl1Text;
 let lvl2;
 let lvl2Text;
+let lvl3;
+let lvl3Text;
 
 let bg4;
 
@@ -38,6 +40,7 @@ class Menu extends Phaser.Scene {
         this.load.image('bg4', './environment/bg-4.png');
         this.load.image('lvl1', './img/lvl1.png');
         this.load.image('lvl2', './img/lvl2.png');
+        this.load.image('lvl3', './img/lvl3.png');
     }
     create() {
 
@@ -55,9 +58,15 @@ class Menu extends Phaser.Scene {
         lvl1.on('clickedThe Earth', lvlearth, this);
         
         lvl2 = this.add.sprite(380, 420, "lvl2").setInteractive({ cursor: 'pointer' });
-        lvl2Text = this.add.text(300, 300, "Mars", CONFIG_TEXT_MENU);
-        createMenuItem(lvl2,lvl2Text,this);
-        lvl2.on('clickedMars', lvlMars, this);
+        lvl2.tint = 0x555555;
+        //lvl2Text = this.add.text(300, 300, "Mars", CONFIG_TEXT_MENU);
+        //createMenuItem(lvl2,lvl2Text,this);
+        //lvl2.on('clickedMars', lvlMars, this);
+
+        lvl3 = this.add.sprite(540, 180, "lvl3").setInteractive({ cursor: 'pointer' });
+        lvl3Text = this.add.text(450, 60, "Venus", CONFIG_TEXT_MENU);
+        createMenuItem(lvl3,lvl3Text,this);
+        lvl3.on('clickedVenus', lvlVenus, this);
     }
     update() {
 
@@ -74,6 +83,13 @@ function lvlearth(){
 function lvlMars(){
     if(clicked){
         game.scene.start('MarsScene');
+        clicked = false;
+    }
+}
+
+function lvlVenus(){
+    if(clicked){
+        game.scene.start('VenusScene');
         clicked = false;
     }
 }

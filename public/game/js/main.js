@@ -21,6 +21,8 @@ let pseudoOverPlayer;
 let playersPseudoList = [];
 let playerSkinChoice = 1;
 
+let particles;
+
 //INPUTS
 let enterKey;
 let restartKey;
@@ -128,7 +130,7 @@ function createMainPlayer(sceneGame){
     player.body.setSize(40,80,10,25);
 
     const camera = sceneGame.cameras.main;
-    camera.startFollow(player);
+    camera.startFollow(player,true);
     camera.setBounds(0, 0, MAP.widthInPixels, MAP.heightInPixels);
 
     sceneGame.physics.add.collider(player, Road);
@@ -171,10 +173,8 @@ function preloadGame(scene){
             scene.load.image('playerIcon5', './img/base4-8.png');
     
             //load sound
-            scene.load.audio('backmusic', './audio/theme.mp3');
             scene.load.audio('jumpfx', './audio/jump_11.wav');
             scene.load.audio('letsgo', './audio/letsgo.mp3');
-            scene.load.audio('backmusic', './audio/theme.mp3');
     
             //load skin
             scene.load.spritesheet('player1',PLAYERS_SKIN_PATH[0],PLAYER_FRAME_SIZE[1])
@@ -186,6 +186,8 @@ function preloadGame(scene){
             scene.load.spritesheet('player7',PLAYERS_SKIN_PATH[6],PLAYER_FRAME_SIZE[0])
             scene.load.spritesheet('player8',PLAYERS_SKIN_PATH[7],PLAYER_FRAME_SIZE[0])
             scene.load.spritesheet('frog',PLAYERS_SKIN_PATH[8],PLAYER_FRAME_SIZE[1]);
+
+            scene.load.spritesheet('particle','./img/particle.png', { frameWidth: 4, frameHeight: 4 });
 }
 
 function createGame(scene){
@@ -315,6 +317,60 @@ scene.anims.create({
     frames: scene.anims.generateFrameNumbers('frog', { start: 0, end: 15 }),
     frameRate: 15,
     repeat: -1
+});
+
+particles = scene.add.particles('particle');
+particles.createEmitter({
+    frame:0,
+    angle: { min: 240, max: 300 },
+    speed: { min: 50, max: 100 },
+    quantity: {min: -12,max:1},
+    lifespan: 500,
+    alpha: { start: 1, end: 0 },
+    scale: { min: 0.05, max: 1 },
+    rotate: { start: 0, end: 360, ease: 'Back.easeOut' },
+    gravityY: 100,
+    blendMode: 'SCREEN',
+    on: false
+});
+particles.createEmitter({
+    frame:1,
+    angle: { min: 240, max: 300 },
+    speed: { min: 50, max: 100 },
+    quantity: {min: -12,max:1},
+    lifespan: 500,
+    alpha: { start: 1, end: 0 },
+    scale: { min: 0.05, max: 1 },
+    rotate: { start: 0, end: 360, ease: 'Back.easeOut' },
+    gravityY: 100,
+    blendMode: 'SCREEN',
+    on: false
+});
+particles.createEmitter({
+    frame:2,
+    angle: { min: 240, max: 300 },
+    speed: { min: 50, max: 100 },
+    quantity: {min: -12,max:1},
+    lifespan: 500,
+    alpha: { start: 1, end: 0 },
+    scale: { min: 0.05, max: 1 },
+    rotate: { start: 0, end: 360, ease: 'Back.easeOut' },
+    gravityY: 100,
+    blendMode: 'SCREEN',
+    on: false
+});
+particles.createEmitter({
+    frame:3,
+    angle: { min: 240, max: 300 },
+    speed: { min: 50, max: 100 },
+    quantity: {min: -12,max:1},
+    lifespan: 500,
+    alpha: { start: 1, end: 0 },
+    scale: { min: 0.05, max: 1 },
+    rotate: { start: 0, end: 360, ease: 'Back.easeOut' },
+    gravityY: 100,
+    blendMode: 'SCREEN',
+    on: false
 });
 
 //keyboard
@@ -542,7 +598,10 @@ function updateGame(scene){
             if(player.body.velocity.y == 0){
                 player.anims.play('left'+playerSkinChoice, true);
             }
-
+            if(player.body.blocked.down){
+                particles.emitParticleAt(player.x+10, player.y+20);
+            }
+            
             player.setVelocityX(player.body.velocity.x - (VELOCITY_RIGHT_LEFT_CHANGE_X * fixLowFrequenceMultiplier));
             //emit
             socket.emit('playerMove',[player.x,player.y,player.body.velocity.x - (VELOCITY_RIGHT_LEFT_CHANGE_X * fixLowFrequenceMultiplier),player.body.velocity.y,idClient,'left'+playerSkinChoice]);
@@ -554,7 +613,9 @@ function updateGame(scene){
             if(player.body.velocity.y == 0){
                 player.anims.play('right'+playerSkinChoice, true);
             }
-
+            if(player.body.blocked.down){
+                particles.emitParticleAt(player.x-10, player.y+20);
+            }
             player.setVelocityX(player.body.velocity.x +(VELOCITY_RIGHT_LEFT_CHANGE_X * fixLowFrequenceMultiplier));
             //emit
             socket.emit('playerMove',[player.x,player.y,player.body.velocity.x + (VELOCITY_RIGHT_LEFT_CHANGE_X * fixLowFrequenceMultiplier),player.body.velocity.y,idClient,'right'+playerSkinChoice]);
@@ -620,8 +681,9 @@ function updateGame(scene){
 
         if(restartKey.isDown & !isReset || pad.R2 & !isReset){
             isReset = true;
-            player.x = 210;
-            player.y = 2070;
+            player.x = SPAWN_POINT[0];
+            player.y = SPAWN_POINT[1];
+            player.setVelocityY(0);
             isStart = false;
             isFinish = false;
             timerText.setText('Timer : ');
@@ -629,6 +691,7 @@ function updateGame(scene){
 
         pseudoOverPlayer.x = player.x - PSEUDO_OFFSET_X;
         pseudoOverPlayer.y = player.y - PSEUDO_OFFSET_Y;
+
     }else{
         
     }

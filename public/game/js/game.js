@@ -1,11 +1,13 @@
 let earthScene = new EarthScene(); 
 let menu = new Menu();
 let marsScene = new MarsScene();
+let venusScene = new VenusScene();
 
 let config = {
     type: Phaser.AUTO,
     width: GAME_WIDTH,
     height: GAME_HEIGHT,
+    roundPixels: true,
     physics: {
         default: 'arcade',
         arcade: {
@@ -32,6 +34,7 @@ let game = new Phaser.Game(config);
 game.scene.add('Menu',menu);
 game.scene.add('EarthScene',earthScene);
 game.scene.add('MarsScene',marsScene);
+game.scene.add('VenusScene',venusScene);
 game.scene.start('Menu');
 
 
