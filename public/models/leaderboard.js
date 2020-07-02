@@ -15,8 +15,8 @@ const LB_TEMPLATE = document.getElementById("leaderboard-template");
 
 
 let socket = io.connect();
-socket.emit('leaderbord',true);
-socket.on("sentscore",(scores)=>scores.forEach(element => {createTrophy(element)}));
+socket.emit('leaderbordload',true);
+socket.on("sentscoreload",(scores)=>scores.forEach(element => {createTrophy(element)}));
 
 
 let createTrophy = (data) => {
