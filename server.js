@@ -15,7 +15,7 @@ function addToMongo(myobj) {
     MongoClient.connect(url, function (err, db) {
         if (err) throw err;
         var dbo = db.db("heroku_j058vh5r");
-        dbo.collection("scores").find({ pseudo: myobj.pseudo }, { map: myobj.map}).toArray(function (err, result) {
+        dbo.collection("scores").find({ pseudo: myobj.pseudo, map: myobj.map}).toArray(function (err, result) {
             if (err) throw err;
             if (!result[0]) {
                 dbo.collection("scores").insertOne(myobj, function (err, res) {
