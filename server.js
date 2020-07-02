@@ -26,7 +26,7 @@ function addToMongo(myobj) {
             } else {
                 if (result[0].time > myobj.time) {
                     //update
-                    var myquery = { pseudo: myobj.pseudo };
+                    var myquery = { pseudo: myobj.pseudo , map: myobj.map};
                     var newvalues = { $set: { time: myobj.time } };
                     dbo.collection("scores").updateOne(myquery, newvalues, function (err, res) {
                         if (err) throw err;
