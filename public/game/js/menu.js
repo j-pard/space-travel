@@ -64,9 +64,9 @@ class Menu extends Phaser.Scene {
         
         lvl2 = this.add.sprite(380, 420, "lvl2").setInteractive({ cursor: 'pointer' });
         lvl2.tint = 0x555555;
-        //lvl2Text = this.add.text(300, 300, "Mars", CONFIG_TEXT_MENU);
-        //createMenuItem(lvl2,lvl2Text,this);
-        //lvl2.on('clickedMars', lvlMars, this);
+        lvl2Text = this.add.text(300, 300, "Mars", CONFIG_TEXT_MENU);
+        createMenuItem(lvl2,lvl2Text,this);
+        lvl2.on('clickedMars', lvlMars, this);
 
         lvl3 = this.add.sprite(540, 180, "lvl3").setInteractive({ cursor: 'pointer' });
         lvl3Text = this.add.text(450, 60, "Venus", CONFIG_TEXT_MENU);
