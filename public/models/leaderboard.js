@@ -1,25 +1,42 @@
-const LB_TARGET = document.getElementById("lb-list");
+const EARTH_UL = document.getElementById("lb-earth-list");
+const MARS_UL = document.getElementById("lb-mars-list");
+const VENUS_UL = document.getElementById("lb-venus-list");
 const LB_DB = "./ressources/top10.json";
 const LB_TEMPLATE = document.getElementById("leaderboard-template");
 
-// let fetchBoard = async () => {
-//       const RESPONSE = await fetch(LB_DB);
-//       const DATA = await RESPONSE.json();
+let fetchBoard = async () => {
+      const RESPONSE = await fetch(LB_DB);
+      const DATA = await RESPONSE.json();
 
-//       DATA.top.forEach(element => {
-//             createTrophy(element);
-//       });
-// }
+      DATA.top.forEach(element => {
+            createTrophy(element);
+      });
+}
+
+
 let socket = io.connect();
-socket.emit('leaderbord',true);
-socket.on("sentscore",(scores)=>scores.forEach(element => {createTrophy(element)}));
+//socket.emit('leaderbord',true);
+//socket.on("sentscore",(scores)=>scores.forEach(element => {createTrophy(element)}));
 
 
 let createTrophy = (data) => {
       let trophy = document.importNode(LB_TEMPLATE.content, true);
       trophy.querySelector("span.lb-pseudo").textContent = data.pseudo;
       trophy.querySelector("span.lb-time").textContent = convertTime(data.time);
-      LB_TARGET.appendChild(trophy);
+      switch (data.map) {
+            case "mars":
+                  trophy.querySelector("img.lb-img").setAttribute("src", "./img/mars.png");
+                  MARS_UL.appendChild(trophy);
+                  break;
+            case "venus":
+                  trophy.querySelector("img.lb-img").setAttribute("src", "./img/venus.png");
+                  VENUS_UL.appendChild(trophy);
+                  break;
+            case "earth":
+            default:
+                  EARTH_UL.appendChild(trophy);
+                  break;
+      }
 }
 
 let convertTime = (duration) => {
@@ -35,3 +52,4 @@ let convertTime = (duration) => {
 
 // RUNNING
 
+fetchBoard();

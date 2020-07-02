@@ -458,16 +458,22 @@ body#lb-body {
                   color: $dark-gray;
             }
       }
-      ul {
-            width: 800px;
-            max-width: 100%;  
 
-            li {
-                  span.title {
-                        font-weight: bold;
+      div#map-list {
+            align-items: flex-start !important;
+            width: 100%;
+            ul {
+                  width: 400px;
+                  max-width: 100%;  
+                  margin-top: 50px;
+                  li {
+                        span.title {
+                              font-weight: bold;
+                        }
                   }
             }
       }
+      
 }
 
 // CHAT

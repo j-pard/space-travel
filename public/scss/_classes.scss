@@ -163,3 +163,11 @@ li.hoverable:hover {
       color: $ratpi-blue;
       border: 1px solid $ratpi-blue;
 }
+
+.list-head {
+      text-transform: uppercase;
+      list-style: none;
+      font-size: 30px;
+      font-weight: bold;
+      text-align: center;
+}

@@ -366,6 +366,14 @@ li.hoverable:hover {
   border: 1px solid #0072d2;
 }
 
+.list-head {
+  text-transform: uppercase;
+  list-style: none;
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+}
+
 @-webkit-keyframes small_to_big {
   from {
     -webkit-transform: scale(0.8);
@@ -864,12 +872,20 @@ body#lb-body nav a, body#lb-body nav a:visited {
   color: #323232;
 }
 
-body#lb-body ul {
-  width: 800px;
-  max-width: 100%;
+body#lb-body div#map-list {
+  -webkit-box-align: start !important;
+      -ms-flex-align: start !important;
+          align-items: flex-start !important;
+  width: 100%;
 }
 
-body#lb-body ul li span.title {
+body#lb-body div#map-list ul {
+  width: 400px;
+  max-width: 100%;
+  margin-top: 50px;
+}
+
+body#lb-body div#map-list ul li span.title {
   font-weight: bold;
 }
 
