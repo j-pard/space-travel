@@ -196,12 +196,12 @@ io.sockets.on('connection', (socket) => {
 
     // LEADERBOARD
     
-    socket.on('leaderbord', () => {
+    socket.on('leaderbord', (mapName) => {
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;
             let dbo = db.db("heroku_j058vh5r");
             let mysort = { time: 1 };
-            dbo.collection("scores").find().sort(mysort).toArray(function (err, result) {
+            dbo.collection("scores").find({map:mapName}).sort(mysort).toArray(function (err, result) {
                 if (err) throw err;
                 db.close();
                 socket.emit('sentscore', result);
