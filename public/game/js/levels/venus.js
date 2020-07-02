@@ -50,7 +50,7 @@ class VenusScene extends Phaser.Scene {
 
         //map
         MAP = this.make.tilemap({ key: "map"});
-        tset = MAP.addTilesetImage("venus", "tiles");
+        tset = MAP.addTilesetImage("venus", "tiles",16,16,1,2);
 
         Road = MAP.createStaticLayer("road", tset, 0, 0);
         Road.setCollisionByProperty({ collides: true });
