@@ -15,10 +15,10 @@ function addToMongo(myobj) {
     MongoClient.connect(url, function (err, db) {
         if (err) throw err;
         var dbo = db.db("heroku_j058vh5r");
-        dbo.collection(myobj.map).find({ pseudo: myobj.pseudo }).toArray(function (err, result) {
+        dbo.collection("scores").find({ pseudo: myobj.pseudo }, { map: myobj.map}).toArray(function (err, result) {
             if (err) throw err;
             if (!result[0]) {
-                dbo.collection(myobj.map).insertOne(myobj, function (err, res) {
+                dbo.collection("scores").insertOne(myobj, function (err, res) {
                     if (err) throw err;
                     console.log("1 document inserted");
                     db.close();
@@ -28,7 +28,7 @@ function addToMongo(myobj) {
                     //update
                     var myquery = { pseudo: myobj.pseudo };
                     var newvalues = { $set: { time: myobj.time } };
-                    dbo.collection(myobj.map).updateOne(myquery, newvalues, function (err, res) {
+                    dbo.collection("scores").updateOne(myquery, newvalues, function (err, res) {
                         if (err) throw err;
                         console.log("1 document updated");
                         db.close();
@@ -196,12 +196,12 @@ io.sockets.on('connection', (socket) => {
 
     // LEADERBOARD
     
-    socket.on('leaderbord', (table) => {
+    socket.on('leaderbord', () => {
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;
-            var dbo = db.db("heroku_j058vh5r");
+            let dbo = db.db("heroku_j058vh5r");
             let mysort = { time: 1 };
-            dbo.collection(table).find().sort(mysort).toArray(function (err, result) {
+            dbo.collection("scores").find().sort(mysort).toArray(function (err, result) {
                 if (err) throw err;
                 db.close();
                 socket.emit('sentscore', result);
