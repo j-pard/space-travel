@@ -50,7 +50,7 @@ class EarthScene extends Phaser.Scene {
 
         //map
         MAP = this.make.tilemap({ key: "map"});
-        tset = MAP.addTilesetImage("road", "tiles");
+        tset = MAP.addTilesetImage("road", "tiles",16,16,1,2);
 
         Road = MAP.createStaticLayer("road", tset, 0, 0);
         Road.setCollisionByProperty({ collides: true });
