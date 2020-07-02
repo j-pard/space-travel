@@ -1,5 +1,8 @@
 let clicked = true;
 
+let loader;
+let loaderText;
+
 let lvl1;
 let lvl1Text;
 let lvl2;
@@ -44,6 +47,8 @@ class Menu extends Phaser.Scene {
     }
     create() {
 
+        
+
         bg4 = this.add.tileSprite(0, -5, this.cameras.main.width / 2, this.cameras.main.height / 2, "bg4");
         let scaleX1 = this.cameras.main.width / bg4.width
         let scaleY1 = this.cameras.main.height / bg4.height
@@ -67,6 +72,22 @@ class Menu extends Phaser.Scene {
         lvl3Text = this.add.text(450, 60, "Venus", CONFIG_TEXT_MENU);
         createMenuItem(lvl3,lvl3Text,this);
         lvl3.on('clickedVenus', lvlVenus, this);
+
+        loader = this.add.text(0,0,"Chargement",{
+            font: "30px monospace",
+            fill:'#ffffff',
+            color:'#ffffff',
+            backgroundColor: "#000000aa",
+            fixedWidth:GAME_WIDTH,
+            fixedHeight: GAME_HEIGHT,
+            padding:{
+                left: 100,
+                top: (GAME_HEIGHT/2)-30,
+            },
+            align:"center"
+        });
+        loader.setVisible(false);
+
     }
     update() {
 
@@ -77,6 +98,7 @@ function lvlearth(){
     if(clicked){
         game.scene.start('EarthScene');
         clicked = false;
+        loader.setVisible(true);
     }
 }
 
@@ -84,6 +106,7 @@ function lvlMars(){
     if(clicked){
         game.scene.start('MarsScene');
         clicked = false;
+        loader.setVisible(true);
     }
 }
 
@@ -91,5 +114,6 @@ function lvlVenus(){
     if(clicked){
         game.scene.start('VenusScene');
         clicked = false;
+        loader.setVisible(true);
     }
 }
