@@ -193,6 +193,9 @@ io.sockets.on('connection', (socket) => {
         socket.emit('messageToAll', { author: "You", text: message });
         socket.broadcast.emit('messageToAll', { author: socket.pseudo, text: message });
     });
+
+    // LEADERBOARD
+    
     socket.on('leaderbord', (table) => {
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;
