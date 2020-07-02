@@ -494,8 +494,8 @@ socket.on("newScore",(scoreReturn)=>{
 socket.on("sentscore",(scoreLeader)=>{
     let text = "";
     for(let i = 0 ; i < scoreLeader.length;i++){
-        if(i < 10)text += " "+(i+1)+".  ";
-        if(i >= 10)text += (i+1)+".  ";
+        if(i < 9)text += " "+(i+1)+".  ";
+        if(i >= 9)text += (i+1)+".  ";
         text += convertMilliLiveBoard(scoreLeader[i]) + "\n";
     }
     leaderBoard.setText(text);
